@@ -9,10 +9,9 @@ cache:
 
 build-pwa:
   stage: build
-  variables:
-    PATH: '$PATH:/app/node_modules/.bin'
   script:
     - npm install
+    - npm install -g @quasar/cli
     - quasar build -m pwa
   artifacts:
     paths:
