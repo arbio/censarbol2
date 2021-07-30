@@ -21,7 +21,7 @@ build-pwa:
 pages:
   stage: deploy
   script:
-    - cp -a dist/pwa public
+    - cp -a dist/pwa/* public/
   artifacts:
     paths:
       - public
