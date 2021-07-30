@@ -22,3 +22,6 @@ pages:
   stage: deploy
   script:
     - cp -a dist/pwa public
+  artifacts:
+    paths:
+      - public
