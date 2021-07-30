@@ -1,23 +1,18 @@
 image: node:12-buster-slim
 
 stages:
-  - prepare
   - build
 
 cache:
   paths:
     - node_modules/
 
-install_dependencies:
-  stage: prepare
-  script:
-    - npm install
-  artifacts:
-    paths:
-      - node_modules/
-
-
 build-pwa:
   stage: build
   script:
+    - npm install
     - quasar build -m pwa
+  artifacts:
+    paths:
+      - node_modules/
+  expire_in: 1 week
