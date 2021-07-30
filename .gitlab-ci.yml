@@ -15,4 +15,4 @@ build-pwa:
     - quasar build -m pwa
   artifacts:
     paths:
-      - node_modules/
+      - dist/
