@@ -1,6 +1,7 @@
 image: node:12-buster-slim
 
 stages:
+  - prepare
   - build
 
 cache:
@@ -8,7 +9,7 @@ cache:
     - node_modules/
 
 install_dependencies:
-  stage: build
+  stage: prepare
   script:
     - npm install
   artifacts:
