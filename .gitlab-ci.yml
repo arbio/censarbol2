@@ -1,0 +1,22 @@
+image: node:12-buster-slim
+
+stages:
+  - build
+
+cache:
+  paths:
+    - node_modules/
+
+install_dependencies:
+  stage: build
+  script:
+    - npm install
+  artifacts:
+    paths:
+      - node_modules/
+
+
+build-pwa:
+  stage: build
+  script:
+    - quasar build -m pwa
