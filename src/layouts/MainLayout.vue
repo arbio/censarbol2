@@ -15,7 +15,7 @@
           Censa Árbol
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <div>Arbio</div>
       </q-toolbar>
     </q-header>
 
@@ -30,7 +30,7 @@
           header
           class="text-grey-8"
         >
-          Essential Links
+          Registro de Árboles
         </q-item-label>
 
         <EssentialLink
