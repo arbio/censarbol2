@@ -14,6 +14,9 @@
         :rules="[ val => val && val.length > 0 || 'Please type something']"
       />
     </q-form>
+     <button @click="getCurrentPosition">
+      Get Current Location
+    </button>
 
 
     <q-page-sticky position="bottom-left" :offset="[18, 18]">
@@ -23,7 +26,10 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
+import { Geolocation } from '@capacitor/geolocation';
+import { Plugins } from '@capacitor/core';
+
 
 export default defineComponent({
   name: 'TreeForm',
@@ -36,6 +42,13 @@ export default defineComponent({
     onSubmit: ()=>{
       console.log("submitted")
     }
+  },
+  setup() {
+    const getCurrentPosition = async () => {
+      const pos = await Geolocation.getCurrentPosition();
+      console.log(pos)
+    };
+    return { getCurrentPosition }
   }
 })
 </script>
