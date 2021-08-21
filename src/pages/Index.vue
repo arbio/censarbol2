@@ -6,7 +6,7 @@
       style="width: 354px; height: 396px"
       v-show="!trees_exist"
     >
-    <TreeList v-show="trees_exist"></TreeList>
+    <TreeList title="Árboles" v-show="trees_exist"></TreeList>
 
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
       <q-btn fab icon="add" color="positive" :to="{path: '/tree/'}" />
