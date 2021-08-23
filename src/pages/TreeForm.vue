@@ -28,6 +28,22 @@
         lazy-rules
         :rules="[ val => val && val.length > 0 || 'Escribe algo porfavor']"
       />
+      <q-input
+        filled
+        v-model="location.latitude"
+        label="Latitud"
+        hint="GPS"
+        lazy-rules
+        :rules="[ val => val && val.length > 0 || 'Escribe algo porfavor']"
+      />
+      <q-input
+        filled
+        v-model="location.longitude"
+        label="Longitud"
+        hint="GPS"
+        lazy-rules
+        :rules="[ val => val && val.length > 0 || 'Escribe algo porfavor']"
+      />
     </q-form>
 
     <q-page-sticky position="bottom-left" :offset="[18, 18]">
@@ -39,8 +55,6 @@
 <script>
 import { defineComponent, onMounted, ref } from 'vue';
 import { Geolocation } from '@capacitor/geolocation';
-import { Plugins } from '@capacitor/core';
-
 
 export default defineComponent({
   name: 'TreeForm',
