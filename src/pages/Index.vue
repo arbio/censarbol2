@@ -16,16 +16,18 @@
 
 <script>
 import TreeList from 'components/TreeList.vue';
-import { defineComponent } from 'vue';
-import store from '../store/index';
-
-console.log(store.trees)
+import { defineComponent, computed } from 'vue';
+import { useStore } from 'vuex'
 
 export default defineComponent({
   name: 'PageIndex',
   components: { TreeList },
-  computed: {
-    trees_exist: ()=>(store.trees.length>0)
+  setup: function () {
+    const $store = useStore()
+    const trees_exist = computed({
+      get: () => ($store.state.trees.inventory.length > 0)
+    })
+    return { trees_exist }
   }
 })
 </script>

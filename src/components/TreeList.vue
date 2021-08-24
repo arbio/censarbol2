@@ -9,10 +9,18 @@
 </div>
 </template>
 <script>
-import store from '../store/index';
-import { defineComponent } from 'vue'
+import { defineComponent, computed } from 'vue'
+import { useStore } from 'vuex'
 
 export default defineComponent({
+  setup () {
+    const $store = useStore()
+    const rows = computed({
+        get: ()=>$store.state.trees.inventory
+    })
+
+    return { rows }
+  },
   name: 'TreeList',
   props: {
       title: {
@@ -21,13 +29,11 @@ export default defineComponent({
   },
   computed: {
       columns: ()=>[
-          {label: "ID"},
-          {label: "Alt."},
+          {label: "ID", field: 'name'},
+          {label: "Alt.", field: 'alt'},
           {label: "Dir."},
           {label: "Dist."}
-      ],
-      rows: ()=>
-          store.trees
+      ]
   }
 })
 
