@@ -7,7 +7,7 @@
     >
       <q-input
         filled
-        v-model="name"
+        v-model="data.name"
         label="Individuo"
         hint="Identifíicador único"
         lazy-rules
@@ -15,14 +15,14 @@
       />
       <q-input
         filled
-        v-model="especie"
+        v-model="data.especie"
         label="Nombre Común"
         lazy-rules
         :rules="[ val => val && val.length > 0 || 'Escribe algo porfavor']"
       />
       <q-input
         filled
-        v-model="cientifico"
+        v-model="data.cientifico"
         label="Nombre Científico"
         hint="de la especie"
         lazy-rules
@@ -44,20 +44,19 @@
       <q-separator />
       <q-input
         filled
-        v-model="circ"
+        v-model="data.circ"
         label="Circ.(cm)"
         hint="GPS"
       />
       <q-input
         filled
-        v-model="alt"
+        v-model="data.alt"
         label="Alt.(m)"
         hint="GPS"
       />
 
       <div>
-        <q-btn label="Submit" type="submit" color="primary"/>
-        <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
+        <q-btn label="Enviar" type="submit" color="primary"/>
       </div>
     </q-form>
 
@@ -75,24 +74,27 @@ import { useStore } from 'vuex'
 
 export default defineComponent({
   name: 'TreeForm',
-  setup: function () {
+  setup: function (props, context) {
     const $store = useStore()
-    const data = computed({
-        get: ()=>$store.state.trees.inventory
-    })
-  },
-  data: () => {
-    return {
-      name: "Uno",
-      especie: "Dos",
-      cientifico: "Tres",
-      location: {
-          latitude: '',
-          longitude: ''
-      },
-      circ: '',
-      alt: ''
+    const id = context.attrs.treeId
+    let data
+    if ($store.state.trees.inventory[id]) {
+      data = computed({
+        get: ()=>$store.state.trees.inventory[id],
+        set: (formdata)=>{console.log(formdata)}
+      })
     }
+    else {
+      data = computed({
+        get: function() {return {}},
+        set: (formdata)=>{console.log(formdata)}
+      })
+    }
+    const location = {
+        longitude: '',
+        latitude: ''
+    }
+    return { data, location }
   },
   mounted () {
     this.getLocations()
@@ -106,26 +108,6 @@ export default defineComponent({
       console.log(coordinates)
       this.location.latitude = coordinates.coords.latitude
       this.location.longitude = coordinates.coords.longitude
-    },
-    async handleNotification () {
-      const isNot = await this.$LocalNotifications.areEnabled()
-      const canSend = await this.$LocalNotifications.requestPermissions()
-      console.log('can isNot', isNot)
-      console.log('can send', canSend)
-      if (canSend) {
-        await this.$LocalNotifications.schedule({
-          notifications: [
-            {
-              title: "On sale",
-              body: "Widgets are 10% off. Act fast!",
-              id: 1,
-              schedule: { at: new Date(Date.now() + 1000) },
-              actionTypeId: "",
-              extra: null
-            }
-          ]
-        })
-      }
     }
   }
 })
