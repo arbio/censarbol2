@@ -31,13 +31,13 @@
       <q-separator />
       <q-input
         filled
-        v-model="location.latitude"
+        v-model="data.location_latitude"
         label="Latitud"
         hint="GPS"
       />
       <q-input
         filled
-        v-model="location.longitude"
+        v-model="data.location_longitude"
         label="Longitud"
         hint="GPS"
       />
@@ -68,46 +68,43 @@
 </template>
 
 <script>
-import { defineComponent, onMounted, ref, computed } from 'vue';
+import { defineComponent, onMounted, computed, reactive } from 'vue';
 import { Geolocation } from '@capacitor/geolocation';
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'TreeForm',
   setup: function (props, context) {
     const $store = useStore()
+    const $router = useRouter()
     const id = context.attrs.treeId
     let data
     if ($store.state.trees.inventory[id]) {
-      data = computed({
-        get: ()=>$store.state.trees.inventory[id],
-        set: (formdata)=>{console.log(formdata)}
-      })
+      let clone = Object.assign({}, $store.state.trees.inventory[id])
+      data = reactive(clone)
     }
     else {
-      data = computed({
-        get: function() {return {}},
-        set: (formdata)=>{console.log(formdata)}
+      data = reactive({
+        name: '123'
       })
     }
-    const location = {
-        longitude: '',
-        latitude: ''
+    function onSubmit() {
+      console.log("submitted")
+      $store.commit("trees/saveTree", data)
+      $router.push ('/')
     }
-    return { data, location }
+    return { data, onSubmit }
   },
   mounted () {
     this.getLocations()
   },
   methods: {
-    onSubmit: ()=>{
-      console.log("submitted")
-    },
     async getLocations () {
       const coordinates = await Geolocation.getCurrentPosition()
       console.log(coordinates)
-      this.location.latitude = coordinates.coords.latitude
-      this.location.longitude = coordinates.coords.longitude
+      this.data.location_latitude = coordinates.coords.latitude
+      this.data.location_longitude = coordinates.coords.longitude
     }
   }
 })
