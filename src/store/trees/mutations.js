@@ -8,4 +8,5 @@ export function saveTree(state, treeData) {
     else {
       state.inventory.push(Object.assign({}, treeData))
     }
+    localStorage.setItem('inventory', JSON.stringify(state.inventory))
 }

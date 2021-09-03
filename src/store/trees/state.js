@@ -2,8 +2,8 @@
 
 export default function () {
   return {
-    inventory_: JSON.parse(localStorage.getItem('inventory')) || [],
-    inventory: [
+    inventory: JSON.parse(localStorage.getItem('inventory')) || [],
+    inventory_: [
       {
         name: 'ceiba',
         cientifico: 'cientifi',
