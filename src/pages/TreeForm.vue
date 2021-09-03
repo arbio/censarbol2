@@ -29,18 +29,19 @@
         :rules="[ val => val && val.length > 0 || 'Escribe algo porfavor']"
       />
       <q-separator />
-      <q-input
-        filled
-        v-model="data.location_latitude"
-        label="Latitud"
-        hint="GPS"
-      />
-      <q-input
-        filled
-        v-model="data.location_longitude"
-        label="Longitud"
-        hint="GPS"
-      />
+      <div>
+        <q-input
+          filled
+          v-model="data.location_latitude"
+          label="Latitud"
+        />
+        <q-input
+          filled
+          v-model="data.location_longitude"
+          label="Longitud"
+        />
+        <q-btn label="GPS" @click="getLocations()" color="primary"/>
+      </div>
       <q-separator />
       <q-input
         filled
@@ -96,12 +97,16 @@ export default defineComponent({
     }
     return { data, onSubmit }
   },
-  mounted () {
-    this.getLocations()
-  },
   methods: {
     async getLocations () {
-      const coordinates = await Geolocation.getCurrentPosition()
+      let coordinates
+      try {
+        coordinates = await Geolocation.getCurrentPosition()
+      }
+      catch (error) {
+        console.log('No GPS', error)
+        return
+      }
       console.log(coordinates)
       this.data.location_latitude = coordinates.coords.latitude
       this.data.location_longitude = coordinates.coords.longitude
