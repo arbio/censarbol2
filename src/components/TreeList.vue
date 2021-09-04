@@ -13,6 +13,7 @@
 import { defineComponent, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import { Motion } from '@capacitor/motion'
 
 export default defineComponent({
   setup () {

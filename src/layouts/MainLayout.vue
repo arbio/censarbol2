@@ -15,7 +15,18 @@
           Censa Árbol
         </q-toolbar-title>
 
-        <div>Arbio</div>
+        <div>
+
+        <q-btn
+          flat
+          dense
+          round
+          icon="share_location"
+          aria-label="GPS"
+          @click="toggleGPS"
+        />
+
+          Arbio</div>
       </q-toolbar>
     </q-header>
 
@@ -48,6 +59,7 @@
 
 <script>
 import EssentialLink from 'components/EssentialLink.vue'
+import { Motion } from '@capacitor/motion'
 
 const linksList = [
   {
@@ -87,6 +99,9 @@ export default defineComponent({
       leftDrawerOpen,
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
+      },
+      async toggleGPS () {
+        Motion.addListener('orientation', event => {console.log(event)})
       }
     }
   }
