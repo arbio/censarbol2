@@ -5,57 +5,15 @@
       @submit="onSubmit"
       class="q-gutter-md"
     >
+      <q-btn label="GPS" @click="getLocations()" color="primary"/>
       <q-input
         filled
-        v-model="data.name"
-        label="Individuo"
-        hint="Identifíicador único"
-        lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Escribe algo porfavor']"
+        v-for="field,index in fields"
+        v-model="data[fields[index].name]"
+        :key="fields[index].name"
+        :label="field.label"
+        :hint="field.hint"
       />
-      <q-input
-        filled
-        v-model="data.especie"
-        label="Nombre Común"
-        lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Escribe algo porfavor']"
-      />
-      <q-input
-        filled
-        v-model="data.cientifico"
-        label="Nombre Científico"
-        hint="de la especie"
-        lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Escribe algo porfavor']"
-      />
-      <q-separator />
-      <div>
-        <q-input
-          filled
-          v-model="data.location_latitude"
-          label="Latitud"
-        />
-        <q-input
-          filled
-          v-model="data.location_longitude"
-          label="Longitud"
-        />
-        <q-btn label="GPS" @click="getLocations()" color="primary"/>
-      </div>
-      <q-separator />
-      <q-input
-        filled
-        v-model="data.circ"
-        label="Circ.(cm)"
-        hint="GPS"
-      />
-      <q-input
-        filled
-        v-model="data.alt"
-        label="Alt.(m)"
-        hint="GPS"
-      />
-
       <div>
         <q-btn label="Enviar" type="submit" color="primary"/>
       </div>
@@ -73,6 +31,7 @@ import { defineComponent, onMounted, computed, reactive } from 'vue';
 import { Geolocation } from '@capacitor/geolocation';
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import model from '../store/model'
 
 export default defineComponent({
   name: 'TreeForm',
@@ -81,6 +40,7 @@ export default defineComponent({
     const $router = useRouter()
     const id = context.attrs.treeId
     let data
+    let fields = model.inventory
     if ($store.state.trees.inventory[id]) {
       let clone = Object.assign({}, $store.state.trees.inventory[id])
       data = reactive(clone)
@@ -95,10 +55,7 @@ export default defineComponent({
       $store.commit("trees/saveTree", data)
       $router.push ('/')
     }
-    return { data, onSubmit }
-  },
-  methods: {
-    async getLocations () {
+    async function getLocations () {
       let coordinates
       try {
         coordinates = await Geolocation.getCurrentPosition()
@@ -107,10 +64,11 @@ export default defineComponent({
         console.log('No GPS', error)
         return
       }
-      console.log(coordinates)
+      $store.commit("trees/addLocationPoint", coordinates)
       this.data.location_latitude = coordinates.coords.latitude
       this.data.location_longitude = coordinates.coords.longitude
     }
+    return { data, fields, onSubmit, getLocations }
   }
 })
 </script>
