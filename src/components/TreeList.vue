@@ -83,7 +83,7 @@ export default defineComponent({
       columns: ()=>[
           {name: 'name', label: "ID", field: 'name'},
           {name: 'alt', label: "Alt.", field: 'alt'},
-          {name: 'dir', label: "Dir."},
+          {name: 'dir', label: "Dir.", align: 'center'},
           {name: 'dist', label: "Dist."}
       ]
   }
