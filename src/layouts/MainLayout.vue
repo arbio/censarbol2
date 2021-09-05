@@ -40,7 +40,7 @@
           header
           class="text-grey-8"
         >
-          Registro de Árboles
+          Inventario de Árboles
         </q-item-label>
 
         <EssentialLink
