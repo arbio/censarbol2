@@ -11,6 +11,7 @@
         <q-td :props="props">
             <q-knob
                 readonly
+                v-if="calcBearing(props.row)"
                 :angle="180+calcBearing(props.row)"
                 v-model="one"
                 size="50px"
@@ -43,7 +44,6 @@ export default defineComponent({
     const rows = $store.state.trees.inventory
 
     function editTree(target,tree){
-        console.log('hola', tree.name)
         $router.push ('/tree/'+tree.name)
     }
     function calcDist(row){
@@ -67,7 +67,7 @@ export default defineComponent({
                         lastLocation.coords.latitude, lastLocation.coords.longitude) - 1
         }
         else {
-          return -1
+          return false
         }
     }
     let one = 2
