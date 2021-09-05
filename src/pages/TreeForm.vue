@@ -85,7 +85,7 @@ export default defineComponent({
 })
 </script>
 <style>
-.q-header {
-  z-index: 0;
+.hydrated {
+  z-index: 7000;
 }
 </style>
