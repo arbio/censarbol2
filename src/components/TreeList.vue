@@ -90,3 +90,8 @@ export default defineComponent({
 })
 
 </script>
+<style>
+.q-table__top {
+    align-self: center;
+}
+</style>
