@@ -6,6 +6,7 @@
       class="q-gutter-md"
     >
       <q-btn label="GPS" @click="getLocations()" color="primary"/>
+      <q-btn label="FOTO" @click="getPhoto()" color="primary"/>
       <q-input
         filled
         v-for="field,index in fields"
@@ -27,8 +28,9 @@
 </template>
 
 <script>
-import { defineComponent, onMounted, computed, reactive } from 'vue';
-import { Geolocation } from '@capacitor/geolocation';
+import { defineComponent, onMounted, computed, reactive } from 'vue'
+import { Geolocation } from '@capacitor/geolocation'
+import { Camera, CameraResultType } from '@capacitor/camera'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import model from '../store/model'
@@ -69,7 +71,15 @@ export default defineComponent({
       this.data.location_latitude = coordinates.coords.latitude
       this.data.location_longitude = coordinates.coords.longitude
     }
-    return { data, fields, onSubmit, getLocations }
+    async function getPhoto() {
+      const image = await Camera.getPhoto({
+          quality: 90,
+          allowEditing: true,
+          resultType: CameraResultType.Uri
+      })
+      console.log(image)
+    }
+    return { data, fields, onSubmit, getLocations, getPhoto }
   }
 })
 </script>
