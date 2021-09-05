@@ -41,8 +41,9 @@ export default defineComponent({
     const id = context.attrs.treeId
     let data
     let fields = model.inventory
-    if ($store.state.trees.inventory[id]) {
-      let clone = Object.assign({}, $store.state.trees.inventory[id])
+    const thisTree = $store.state.trees.inventory.find(tree=>tree.name===id)
+    if (thisTree) {
+      let clone = Object.assign({}, thisTree)
       data = reactive(clone)
     }
     else {

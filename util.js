@@ -47,3 +47,19 @@ export function distance(lat1, lon1, lat2, lon2, unit) {
 		return dist;
 	}
 }
+
+export function bearing(lat1,lon1,lat2,lon2) {
+    var p1 = {
+        x: lat1,
+        y: lon1
+    };
+    var p2 = {
+        x: lat2,
+        y: lon2
+    };
+    // angle in radians
+    var angleRadians = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+    // angle in degrees
+    var angleDeg = Math.atan2(p2.y - p1.y, p2.x - p1.x) * 180 / Math.PI;
+    return angleDeg;
+}
