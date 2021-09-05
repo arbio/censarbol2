@@ -30,7 +30,7 @@
 <script>
 import { defineComponent, onMounted, computed, reactive } from 'vue'
 import { Geolocation } from '@capacitor/geolocation'
-import { Camera, CameraResultType } from '@capacitor/camera'
+import { Camera, CameraResultType, CameraDirection } from '@capacitor/camera'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import model from '../store/model'
@@ -75,7 +75,8 @@ export default defineComponent({
       const image = await Camera.getPhoto({
           quality: 90,
           allowEditing: true,
-          resultType: CameraResultType.Uri
+          resultType: CameraResultType.Uri,
+          direction: CameraDirection.Front
       })
       console.log(image)
     }
