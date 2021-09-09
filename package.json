@@ -13,6 +13,7 @@
   "dependencies": {
     "@capacitor/camera": "^1.0.5",
     "@capacitor/core": "^3.2.0",
+    "@capacitor/filesystem": "^1.0.3",
     "@capacitor/geolocation": "^1.0.2",
     "@capacitor/motion": "^1.0.2",
     "@ionic/pwa-elements": "^3.0.2",
