@@ -15,8 +15,7 @@
     >
       <q-carousel-slide class="column no-wrap" v-for="photo,index in data.photos" :name="index" :key="photo">
         <div class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap">
-          <q-img class="rounded-borders col-6 full-height" :src="objUris[photo]" />
-          <q-img class="rounded-borders col-6 full-height" :src="objUris[data.photos[index+1]]" />
+          <q-img class="rounded-borders full-height" :src="objUris[photo]" />
         </div>
       </q-carousel-slide>
     </q-carousel>
@@ -25,7 +24,6 @@
       @submit="onSubmit"
       class="q-gutter-md"
     >
-      <q-img class="rounded-borders col-6 full-height" v-if="lastPic" :src="lastPic" />
       <q-btn text-color="black" label="GPS" @click="getLocations()" color="primary"/>
       <q-btn text-color="black" label="FOTO" @click="getPhoto()" color="primary"/>
       <q-input
@@ -64,7 +62,6 @@ export default defineComponent({
     const $router = useRouter()
     const id = context.attrs.treeId
     let data
-    let lastPic = ref('')
     let fields = model.inventory
     let objUris = reactive({})
     let slide = ref(0)
@@ -105,8 +102,7 @@ export default defineComponent({
       })
       let datestring = new Date().toISOString()
       let filename = '/photos/tree_' + datestring + '.' + image.format
-      this.lastPic = image.webPath
-      let blob = await fetch(this.lastPic).then(r => r.blob())
+      let blob = await fetch(image.webPath).then(r => r.blob())
       await Filesystem.writeFile({
         path: filename,
         directory: Directory.External,
@@ -117,6 +113,8 @@ export default defineComponent({
         this.data.photos = []
       }
       this.data.photos.push(filename)
+      this.objUris[filename] = image.webPath
+      this.slide = this.data.photos.length-1
       console.log(blob)
       console.log(image)
     }
@@ -136,7 +134,7 @@ export default defineComponent({
         }
       }
     })
-    return { data, fields, onSubmit, getLocations, getPhoto, lastPic,
+    return { data, fields, onSubmit, getLocations, getPhoto,
              objUris, onMounted, slide }
   }
 })
