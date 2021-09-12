@@ -13,3 +13,8 @@ export function addLocationPoint(state, location) {
     console.log('New Geolocation Point!', location, state)
     state.location_data.push(location)
 }
+
+export function addOrientationData(state, orientation) {
+    state.motion_data.push(orientation)
+    state.motion_data.splice(10)
+}

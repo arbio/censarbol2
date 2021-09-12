@@ -3,6 +3,7 @@
 export default function () {
   return {
     location_data: [],
+    motion_data: [],
     inventory: JSON.parse(localStorage.getItem('inventory')) || [],
     inventory_: [
       {

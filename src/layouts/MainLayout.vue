@@ -60,6 +60,7 @@
 <script>
 import EssentialLink from 'components/EssentialLink.vue'
 import { Motion } from '@capacitor/motion'
+import { useStore } from 'vuex'
 
 const linksList = [
   {
@@ -92,6 +93,7 @@ export default defineComponent({
   },
 
   setup () {
+    const $store = useStore()
     const leftDrawerOpen = ref(false)
 
     return {
@@ -101,7 +103,9 @@ export default defineComponent({
         leftDrawerOpen.value = !leftDrawerOpen.value
       },
       async toggleGPS () {
-        Motion.addListener('orientation', event => {console.log(event)})
+        Motion.addListener('orientation', event => {
+          $store.commit("trees/addOrientationData", event)
+	})
       }
     }
   }

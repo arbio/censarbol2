@@ -34,7 +34,6 @@
 import { defineComponent, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import { Motion } from '@capacitor/motion'
 import { distance, bearing } from '../../util.js'
 
 export default defineComponent({
@@ -63,8 +62,12 @@ export default defineComponent({
             row.location_longitude &&
             $store.state.trees.location_data.length > 0) {
           let lastLocation = $store.state.trees.location_data [$store.state.trees.location_data.length - 1]
-          return bearing(row.location_latitude, row.location_longitude,
+          const north_bearing = bearing(row.location_latitude, row.location_longitude,
                         lastLocation.coords.latitude, lastLocation.coords.longitude) - 1
+          if ($store.state.motion_data) {
+            console.log(north_bearing, $store.state.motion_data[$store.state.motion_data.length -1])
+          }
+          return north_bearing
         }
         else {
           return false
