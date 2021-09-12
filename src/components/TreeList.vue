@@ -66,6 +66,8 @@ export default defineComponent({
                         lastLocation.coords.latitude, lastLocation.coords.longitude) - 1
           if ($store.state.motion_data) {
             console.log(north_bearing, $store.state.motion_data[$store.state.motion_data.length -1])
+            console.log("Adjusting for motion")
+            return north_bearing + $store.state.motion_data.slice(-1) - 180
           }
           return north_bearing
         }
