@@ -16,5 +16,5 @@ export function addLocationPoint(state, location) {
 
 export function addOrientationData(state, orientation) {
     state.motion_data.push(orientation)
-    state.motion_data.splice(10)
+    state.motion_data.splice(0, 10)
 }
