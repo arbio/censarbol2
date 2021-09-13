@@ -10,11 +10,17 @@ export function saveTree(state, treeData) {
 }
 
 export function addLocationPoint(state, location) {
+  if (location) {
     console.log('New Geolocation Point!', location, state)
     state.location_data.push(location)
+  }
 }
 
 export function addOrientationData(state, orientation) {
     state.motion_data.push(orientation)
     state.motion_data.splice(0, state.motion_data.length - 10)
+}
+
+export function setWatchId(state, callbackID) {
+  state.watch_id = callbackID
 }

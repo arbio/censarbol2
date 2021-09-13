@@ -17,13 +17,14 @@
 
         <div>
 
-        <q-btn
+        <q-toggle
+          v-model="gps"
           flat
           dense
           round
           icon="share_location"
           aria-label="GPS"
-          @click="toggleGPS"
+          @update:model-value="toggleGPS"
         />
 
           Arbio</div>
@@ -61,6 +62,7 @@
 import EssentialLink from 'components/EssentialLink.vue'
 import { Motion } from '@capacitor/motion'
 import { useStore } from 'vuex'
+import { Geolocation } from '@capacitor/geolocation'
 
 const linksList = [
   {
@@ -95,17 +97,34 @@ export default defineComponent({
   setup () {
     const $store = useStore()
     const leftDrawerOpen = ref(false)
-
+    let gps = ref(false)
     return {
       essentialLinks: linksList,
+      gps,
       leftDrawerOpen,
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
       },
       async toggleGPS () {
-        Motion.addListener('orientation', event => {
-          $store.commit("trees/addOrientationData", event)
-	})
+        if (gps.value) {
+          console.log("enable")
+          Motion.addListener('orientation', event => {
+            $store.commit("trees/addOrientationData", event)
+	        })
+          let callbackID = await Geolocation.watchPosition({
+            enableHighAccuracy: true,
+            timeout: 250},
+            (e)=>$store.commit('trees/addLocationPoint', e)
+          )
+          $store.commit('trees/setWatchId', callbackID)
+        }
+        else {
+          console.log("disable")
+          Motion.removeAllListeners()
+          Geolocation.clearWatch({
+            'id': $store.state.watch_id
+          })
+        }
       }
     }
   }

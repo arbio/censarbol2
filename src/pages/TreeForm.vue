@@ -2,6 +2,7 @@
 <q-page class="flex column items-center">
   <div class="q-pa-md full-width q-gutter-md">
     <q-carousel
+      v-if="!(data.photos==undefined)"
       v-model="slide"
       transition-prev="slide-right"
       transition-next="slide-left"
