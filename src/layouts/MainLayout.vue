@@ -19,7 +19,6 @@
 
         <q-toggle
           v-model="gps"
-          flat
           dense
           round
           icon="share_location"
