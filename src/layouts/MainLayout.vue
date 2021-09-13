@@ -97,9 +97,11 @@ export default defineComponent({
     const $store = useStore()
     const leftDrawerOpen = ref(false)
     let gps = ref(false)
+    let motionHandle = {}
     return {
       essentialLinks: linksList,
       gps,
+      motionHandle,
       leftDrawerOpen,
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
@@ -107,7 +109,7 @@ export default defineComponent({
       async toggleGPS () {
         if (gps.value) {
           console.log("enable")
-          Motion.addListener('orientation', event => {
+          motionHandle = await Motion.addListener('orientation', event => {
             $store.commit("trees/addOrientationData", event)
 	        })
           let callbackID = await Geolocation.watchPosition({
@@ -119,9 +121,9 @@ export default defineComponent({
         }
         else {
           console.log("disable")
-          Motion.removeAllListeners()
+          motionHandle.remove()
           Geolocation.clearWatch({
-            'id': $store.state.watch_id
+            'id': $store.state.trees.watch_id
           })
         }
       }
