@@ -64,7 +64,7 @@ export default defineComponent({
           let lastLocation = $store.state.trees.location_data [$store.state.trees.location_data.length - 1]
           const north_bearing = bearing(row.location_latitude, row.location_longitude,
                         lastLocation.coords.latitude, lastLocation.coords.longitude) - 1
-          if ($store.state.motion_data!=undefined) {
+          if (Array.isArray($store.state.motion_data)) {
             console.log(north_bearing, $store.state.motion_data[$store.state.motion_data.length -1])
             console.log("Adjusting for motion")
             return north_bearing + $store.state.motion_data.slice(-1) - 180
