@@ -17,8 +17,8 @@ export function addLocationPoint(state, location) {
 }
 
 export function addOrientationData(state, orientation) {
-    state.motion_data.push(orientation)
     state.motion_data.splice(0, state.motion_data.length - 10)
+    state.motion_data.push(orientation)
 }
 
 export function setWatchId(state, callbackID) {
