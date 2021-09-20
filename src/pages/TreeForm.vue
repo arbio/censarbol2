@@ -1,8 +1,8 @@
 <template>
 <q-page class="flex column items-center">
-  <div class="q-pa-md full-width q-gutter-md">
+  <div class="q-pa-md q-gutter-md">
     <q-carousel
-      v-if="!(data.photos==undefined)"
+      v-if="!(data.photos==undefined) && data.photos.length > 0"
       v-model="slide"
       transition-prev="slide-right"
       transition-next="slide-left"
@@ -16,7 +16,14 @@
     >
       <q-carousel-slide class="column no-wrap" v-for="photo,index in data.photos" :name="index" :key="photo">
         <div class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap">
-          <q-img class="rounded-borders full-height" :src="objUris[photo]" />
+          <q-img class="rounded-borders full-height" :src="objUris[photo]">
+            <q-icon
+                name="delete"
+                color="negative"
+                class="bg-dark absolute all-pointer-events"
+                @click="removePhoto(index)"
+              />
+          </q-img>
         </div>
       </q-carousel-slide>
     </q-carousel>
@@ -36,7 +43,11 @@
         :hint="field.hint"
       />
       <div>
-        <q-btn label="Enviar" type="submit" color="primary"/>
+        <q-btn class="glossy" label="Enviar" type="submit" color="secondary"/>
+      </div>
+      <q-separator inset />
+      <div>
+        <q-btn class="glossy" rounded color="red-8" label="Borrar" @click="removeItem" />
       </div>
     </q-form>
 
@@ -54,6 +65,7 @@ import { Camera, CameraResultType, CameraDirection } from '@capacitor/camera'
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import { extend } from 'quasar'
 import model from '../store/model'
 
 export default defineComponent({
@@ -68,12 +80,12 @@ export default defineComponent({
     let slide = ref(0)
     const thisTree = $store.state.trees.inventory.find(tree=>tree.name===id)
     if (thisTree) {
-      let clone = Object.assign({}, thisTree)
+      let clone = extend(true, {}, thisTree)
       data = reactive(clone)
     }
     else {
       data = reactive({
-        name: '123',
+        name: '',
         photos: []
       })
     }
@@ -81,6 +93,20 @@ export default defineComponent({
       console.log("submitted")
       $store.commit("trees/saveTree", data)
       $router.push ('/')
+    }
+    function removeItem(ev) {
+      $store.commit("trees/removeTree", thisTree.name)
+      console.log("removed", thisTree.name)
+      $router.push ('/')
+    }
+    async function removePhoto(index) {
+      console.log('removing photo', data.photos[index])
+      objUris[index] = undefined
+      data.photos.splice(index, 1)
+      await Filesystem.deleteFile({
+        path: data.photos[index],
+        directory: Directory.External
+      })
     }
     async function getLocations () {
       let coordinates
@@ -135,8 +161,8 @@ export default defineComponent({
         }
       }
     })
-    return { data, fields, onSubmit, getLocations, getPhoto,
-             objUris, onMounted, slide }
+    return { data, fields, onSubmit, removeItem, getLocations, getPhoto,
+             objUris, onMounted, removePhoto, slide }
   }
 })
 </script>

@@ -24,3 +24,8 @@ export function addOrientationData(state, orientation) {
 export function setWatchId(state, callbackID) {
   state.watch_id = callbackID
 }
+
+export function removeTree(state, treeName) {
+  const removeIndex = state.inventory.findIndex(tree => tree.name === treeName)
+  state.inventory.splice(removeIndex, 1)
+}
