@@ -65,22 +65,28 @@ import { Geolocation } from '@capacitor/geolocation'
 
 const linksList = [
   {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
+    title: 'Inicio',
+    caption: 'Información general',
+    icon: 'favorite',
+    link: '/#'
+  },
+  {
+    title: 'Lista',
+    caption: 'Inventario completo',
+    icon: 'list',
+    link: '/#'
+  },
+  {
+    title: 'Exportar',
+    caption: 'Descargar inventario y fotos',
+    icon: 'publish',
+    link: '#/export'
   },
   {
     title: 'Código Fuente',
-    caption: 'gitlab.com/fuentelibre/censaarbol2',
+    caption: 'Adapta esta aplicación',
     icon: 'code',
     link: 'https://gitlab.com/fuentelibre/censaarbol2'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
   }
 ];
 
