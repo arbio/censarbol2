@@ -12,12 +12,13 @@ export default defineComponent({
   setup() {
     const _instance = getCurrentInstance()
     const $gapi = _instance.appContext.app.config.globalProperties.$gapi
-    console.log(_instance.appContext.app.config.globalProperties)
 
     function uploadFiles() {
+      if (!$gapi.isAuthenticated()) {
         $gapi.login().then(({ currentUser, gapi, hasGrantedScopes }) => {
           console.log({ currentUser, gapi, hasGrantedScopes })
         })
+      }
     }
     return { uploadFiles }
   }
