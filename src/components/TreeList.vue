@@ -6,6 +6,7 @@
       :columns="columns"
       row-key="name"
       @row-click="editTree"
+      :pagination="{sortBy: 'dist'}"
     >
      <template v-slot:body-cell-dir="props">
         <q-td :props="props">
@@ -75,21 +76,24 @@ export default defineComponent({
         }
     }
     let one = 2
-    return { one, rows, editTree, calcDist, calcBearing }
+
+    let columns = computed(
+        ()=>[
+            {name: 'name', label: "ID", field: 'name', sortable: true},
+            {name: 'alt', label: "Alt.", field: 'alt', sortable: true},
+            {name: 'dir', label: "Dir.", field: 'dir', align: 'center'},
+            {name: 'dist', label: "Dist.", sortable: true, 
+            'field': calcDist,
+            'sort': (a, b) => parseFloat(a, 10) - parseFloat(b, 10)}
+        ]
+    )
+    return { one, rows, editTree, calcDist, calcBearing, columns }
   },
   name: 'TreeList',
   props: {
       title: {
           type: String
       }
-  },
-  computed: {
-      columns: ()=>[
-          {name: 'name', label: "ID", field: 'name'},
-          {name: 'alt', label: "Alt.", field: 'alt'},
-          {name: 'dir', label: "Dir.", align: 'center'},
-          {name: 'dist', label: "Dist."}
-      ]
   }
 })
 
