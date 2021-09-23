@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import TreeList from 'components/TreeList.vue';
-import { defineComponent, computed } from 'vue';
+import TreeList from 'components/TreeList.vue'
+import { defineComponent, computed } from 'vue'
 import { useStore } from 'vuex'
 
 export default defineComponent({
