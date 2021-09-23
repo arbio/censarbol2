@@ -12,7 +12,7 @@
             <q-knob
                 readonly
                 v-if="calcBearing(props.row)"
-                :angle="180+calcBearing(props.row)"
+                :angle="calcBearing(props.row)"
                 v-model="one"
                 size="50px"
                 :thickness="0.22"
