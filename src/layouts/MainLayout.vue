@@ -68,13 +68,13 @@ const linksList = [
     title: 'Inicio',
     caption: 'Información general',
     icon: 'favorite',
-    link: '/#'
+    link: '#'
   },
   {
     title: 'Lista',
     caption: 'Inventario completo',
     icon: 'list',
-    link: '/#'
+    link: '#'
   },
   {
     title: 'Exportar',
