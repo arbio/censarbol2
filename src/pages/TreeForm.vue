@@ -125,7 +125,8 @@ export default defineComponent({
       const image = await Camera.getPhoto({
           quality: 90,
           resultType: CameraResultType.Uri,
-          direction: CameraDirection.Front
+          direction: CameraDirection.Front,
+          webUseInput: true
       })
       let datestring = new Date().toISOString()
       let filename = '/photos/tree_' + datestring + '.' + image.format
