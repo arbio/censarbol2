@@ -1,12 +1,24 @@
 <template>
   <q-page class="flex column items-center">
     <h1>Exportar</h1>
-    <button @click="uploadFiles">Enviar a Google Drive</button>
+    <button v-if="curState==='idle'" @click="uploadFiles">Enviar a Google Drive</button>
+    <br>
+    <q-circular-progress
+        v-if="curState!=='idle'" 
+        show-value
+        :value="progress"
+        size="150px"
+        color="orange"
+        class="q-ma-md"
+      >
+      <q-icon name="cloud_upload" v-if="curState==='uploading'" />
+      <q-icon name="done" v-if="curState==='done'" />
+    </q-circular-progress>
   </q-page>
 </template>
 
 <script>
-import { defineComponent, getCurrentInstance } from 'vue'
+import { defineComponent, getCurrentInstance, ref } from 'vue'
 import { useStore } from 'vuex'
 import { Filesystem, Directory } from '@capacitor/filesystem'
 
@@ -15,8 +27,12 @@ export default defineComponent({
     const $store = useStore()
     const _instance = getCurrentInstance()
     const $gapi = _instance.appContext.app.config.globalProperties.$gapi
+    let curState = ref("idle")
+    let progress = ref(0)
 
     async function uploadFiles() {
+      this.curState = "uploading"
+
       if (!$gapi.isAuthenticated()) {
         $gapi.login().then(({ currentUser, gapi, hasGrantedScopes }) => {
           console.log({ currentUser, gapi, hasGrantedScopes })
@@ -62,7 +78,10 @@ export default defineComponent({
         directory: Directory.External
       })).files
 
+      this.progress = 1/(files.length+1)*100
+      let n = 1
       for (let item of files) {
+        n = n+1
         let fileItem = await Filesystem.readFile({
           path: 'photos/'+item,
           directory: Directory.External
@@ -87,9 +106,11 @@ export default defineComponent({
             console.log(xhr.response.id); // Retrieve uploaded file ID.
         };
         xhr.send(form);
+        this.progress = n /(files.length+1)*100
       }
+      this.curState = "done"
     }
-    return { uploadFiles }
+    return { uploadFiles, curState, progress }
   }
 })
 </script>
