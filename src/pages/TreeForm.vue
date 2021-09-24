@@ -82,6 +82,7 @@ import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { extend } from 'quasar'
 import model from '../store/model'
+import { mobileAndTabletCheck } from '../../util.js'
 
 export default defineComponent({
   name: 'TreeForm',
@@ -141,7 +142,7 @@ export default defineComponent({
           quality: 90,
           resultType: CameraResultType.Uri,
           direction: CameraDirection.Front,
-          webUseInput: true
+          webUseInput: mobileAndTabletCheck()
       })
       let datestring = new Date().toISOString()
       let filename = '/photos/tree_' + datestring + '.' + image.format
