@@ -1,7 +1,7 @@
 <template>
   <q-page class="flex column items-center">
     <h1>Exportar</h1>
-    <button v-if="curState==='idle'" @click="uploadFiles">Enviar a Google Drive</button>
+    <button v-if="curState==='idle'" @click="prompt">Enviar a Google Drive</button>
     <br>
     <q-circular-progress
         v-if="curState!=='idle'" 
@@ -20,15 +20,39 @@
 <script>
 import { defineComponent, getCurrentInstance, ref } from 'vue'
 import { useStore } from 'vuex'
+import { useQuasar } from 'quasar'
 import { Filesystem, Directory } from '@capacitor/filesystem'
+import { sleep } from '../../util.js'
 
 export default defineComponent({
   setup() {
     const $store = useStore()
+    const $q = useQuasar()
     const _instance = getCurrentInstance()
     const $gapi = _instance.appContext.app.config.globalProperties.$gapi
     let curState = ref("idle")
     let progress = ref(0)
+    const datestring = (new Date()).toISOString().replace(/:|-/g, '').substring(0,14)
+    let inventory_name = ref('Censo_' + datestring)
+
+    function prompt () {
+      $q.dialog({
+        title: 'Crear directorio',
+        message: 'El inventario y las fotos se ubicarán en esta carpeta en Google Drive.',
+        prompt: {
+          model: this.inventory_name,
+          type: 'text' // optional
+        },
+        cancel: true,
+        persistent: true
+      }).onOk(data => {
+        this.uploadFiles()
+      }).onCancel(() => {
+        console.log('>>>> Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
+    }
 
     async function uploadFiles() {
       this.curState = "uploading"
@@ -41,7 +65,7 @@ export default defineComponent({
       const client = await $gapi.getGapiClient()
       let folderinfo = await gapi.client.drive.files.create({
         'mimeType': "application/vnd.google-apps.folder",
-        'name': 'CensaArbol'
+        'name': this.inventory_name
       });
       console.log(folderinfo.result)
 
@@ -80,8 +104,8 @@ export default defineComponent({
 
       this.progress = 1/(files.length+1)*100
       let n = 1
+      let z = 1
       for (let item of files) {
-        n = n+1
         let fileItem = await Filesystem.readFile({
           path: 'photos/'+item,
           directory: Directory.External
@@ -103,14 +127,21 @@ export default defineComponent({
         xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
         xhr.responseType = 'json';
         xhr.onload = () => {
-            console.log(xhr.response.id); // Retrieve uploaded file ID.
-        };
-        xhr.send(form);
-        this.progress = n /(files.length+1)*100
+          console.log(xhr.response.id); // Retrieve uploaded file ID.
+          n = n+1
+          this.progress = n /(files.length+1)*100
+        }
+        while(true) {
+          await sleep(500)
+          console.log(z-n)
+          if (z-n < 2) break
+        }
+        xhr.send(form)
+        z = z + 1
       }
       this.curState = "done"
     }
-    return { uploadFiles, curState, progress }
+    return { uploadFiles, curState, progress, prompt, inventory_name }
   }
 })
 </script>
