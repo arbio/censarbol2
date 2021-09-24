@@ -34,7 +34,7 @@ export default defineComponent({
     const $gapi = _instance.appContext.app.config.globalProperties.$gapi
     let curState = ref("idle")
     let progress = ref(0)
-    const datestring = (new Date()).toISOString().replace(/:|-/g, '').substring(0,14)
+    const datestring = (new Date()).toISOString().replace(/:|-/g, '').substring(0,13)
     let inventory_name = ref('Censo_' + datestring)
 
     function prompt () {
