@@ -4,6 +4,7 @@
     <button v-if="curState==='idle'" @click="prompt">Enviar a Google Drive</button>
     <br>
     <q-circular-progress
+        :indeterminate="curState==='starting'"
         v-if="curState!=='idle'" 
         show-value
         :value="progress"
@@ -11,6 +12,7 @@
         color="orange"
         class="q-ma-md"
       >
+      <q-icon name="hourglass_bottom" v-if="curState==='starting'" />
       <q-icon name="cloud_upload" v-if="curState==='uploading'" />
       <q-icon name="done" v-if="curState==='done'" />
     </q-circular-progress>
@@ -55,7 +57,7 @@ export default defineComponent({
     }
 
     async function uploadFiles() {
-      this.curState = "uploading"
+      this.curState = "starting"
 
       if (!$gapi.isAuthenticated()) {
         $gapi.login().then(({ currentUser, gapi, hasGrantedScopes }) => {
@@ -67,7 +69,6 @@ export default defineComponent({
         'mimeType': "application/vnd.google-apps.folder",
         'name': this.inventory_name
       });
-      console.log(folderinfo.result)
 
       var fileContent = JSON.stringify($store.state.trees.inventory)
       var file = new Blob([fileContent], {type: 'text/plain'});
@@ -82,12 +83,18 @@ export default defineComponent({
       form.append('metadata', new Blob([JSON.stringify(metadata)], {type: 'application/json'}));
       form.append('file', file);
 
+      const files = (await Filesystem.readdir({
+        path: 'photos/',
+        directory: Directory.External
+      })).files
+
       let xhr = new XMLHttpRequest();
       xhr.open('post', 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id');
       xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
       xhr.responseType = 'json';
       xhr.onload = () => {
-          console.log(xhr.response.id); // Retrieve uploaded file ID.
+        this.progress = 1/(files.length+1)*100
+        this.curState = "uploading"
       };
       xhr.send(form);
 
@@ -97,20 +104,13 @@ export default defineComponent({
         'name': 'photos'
       });
 
-      const files = (await Filesystem.readdir({
-        path: 'photos/',
-        directory: Directory.External
-      })).files
-
-      this.progress = 1/(files.length+1)*100
-      let n = 1
-      let z = 1
+      let n = 0
+      let z = 0
       for (let item of files) {
         let fileItem = await Filesystem.readFile({
           path: 'photos/'+item,
           directory: Directory.External
         })
-        console.log(fileItem)
 
         let metadata = {
             'name': item, // Filename at Google Drive
@@ -128,18 +128,18 @@ export default defineComponent({
         xhr.responseType = 'json';
         xhr.onload = () => {
           console.log(xhr.response.id); // Retrieve uploaded file ID.
-          n = n+1
-          this.progress = n /(files.length+1)*100
+          n = n + 1
+          this.progress = (1+n) /(files.length+1)*100
+          if (n == files.length)
+            this.curState = "done"
         }
         while(true) {
           await sleep(500)
-          console.log(z-n)
-          if (z-n < 2) break
+          if ( z - n < 1) break
         }
         xhr.send(form)
         z = z + 1
       }
-      this.curState = "done"
     }
     return { uploadFiles, curState, progress, prompt, inventory_name }
   }
