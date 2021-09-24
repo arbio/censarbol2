@@ -21,14 +21,25 @@
           v-model="gps"
           dense
           round
-          icon="share_location"
+	  color="red"
+          icon="place"
           aria-label="GPS"
           @update:model-value="toggleGPS"
         />
 
-          Arbio</div>
+          GPS</div>
       </q-toolbar>
     </q-header>
+
+    <q-footer elevated style="color:black">
+      <q-toolbar>
+        <q-btn-group push class="q-mx-auto">
+          <!-- q-btn push text-color="black" color="positive" label="Inicio" icon="nature_people" :to="{path: '/'}" / -->
+          <q-btn push :disable="this.currentRoute.fullPath==='/'" text-color="black" color="positive" label="Inventario" icon="list"  :to="{path: '/'}" />
+          <q-btn push :disable="this.currentRoute.fullPath.startsWith('/tree/')" text-color="black" color="positive" label="Nuevo" icon="nature" :to="{path: '/tree/new'}" />
+        </q-btn-group>
+      </q-toolbar>
+    </q-footer>
 
     <q-drawer
       v-model="leftDrawerOpen"
@@ -51,7 +62,7 @@
       </q-list>
     </q-drawer>
 
-    <q-page-container style="background-color: #304533">
+    <q-page-container style="background-image: url('texture.jpg')">
       <router-view />
     </q-page-container>
   </q-layout>
@@ -62,12 +73,13 @@ import EssentialLink from 'components/EssentialLink.vue'
 import { Motion } from '@capacitor/motion'
 import { useStore } from 'vuex'
 import { Geolocation } from '@capacitor/geolocation'
+import { useRouter } from 'vue-router'
 
 const linksList = [
   {
     title: 'Inicio',
     caption: 'Información general',
-    icon: 'favorite',
+    icon: 'nature_people',
     link: '#'
   },
   {
@@ -101,10 +113,12 @@ export default defineComponent({
 
   setup () {
     const $store = useStore()
+    const $router = useRouter()
     const leftDrawerOpen = ref(false)
     let gps = ref(false)
     let motionHandle = {}
     return {
+      currentRoute: $router.currentRoute,
       essentialLinks: linksList,
       gps,
       motionHandle,

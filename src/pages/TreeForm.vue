@@ -28,32 +28,47 @@
       </q-carousel-slide>
     </q-carousel>
 
-    <q-form
-      @submit="onSubmit"
-      class="q-gutter-md"
-    >
-      <q-btn text-color="black" label="GPS" @click="getLocations()" color="primary"/>
-      <q-btn text-color="black" label="FOTO" @click="getPhoto()" color="primary"/>
-      <q-input
-        filled
-        v-for="field,index in fields"
-        v-model="data[fields[index].name]"
-        :key="fields[index].name"
-        :label="field.label"
-        :hint="field.hint"
-      />
-      <div>
-        <q-btn class="glossy" label="Enviar" type="submit" color="secondary"/>
-      </div>
-      <q-separator inset />
-      <div>
-        <q-btn class="glossy" rounded color="red-8" label="Borrar" @click="removeItem" />
-      </div>
-    </q-form>
+    <q-card class="my-card">
 
-    <q-page-sticky position="bottom-right" :offset="[18, 18]">
+      <q-form
+        @submit="onSubmit"
+        class="q-gutter-md"
+      >
+      <q-card-section>
+      <q-toolbar>
+        <q-btn-group push class="q-mx-auto">
+        <q-btn icon="gps_fixed" text-color="black" label="GPS" @click="getLocations()" color="positive"/>
+        <q-btn icon="camera" text-color="black" label="FOTO" @click="getPhoto()" color="positive"/>
+        </q-btn-group>
+      </q-toolbar>
+      </q-card-section>
+	<q-separator />
+      <q-card-section>
+        <q-input
+          filled
+          v-for="field,index in fields"
+          v-model="data[fields[index].name]"
+          :key="fields[index].name"
+          :label="field.label"
+          :hint="field.hint"
+        />
+        <div>
+          <q-btn class="glossy" label="Enviar" type="submit" color="secondary"/>
+        </div>
+        </q-card-section>
+	<q-separator />
+        <q-card-section>
+        <div>
+          <q-btn class="glossy" rounded color="red-8" label="Borrar" @click="removeItem" />
+        </div>
+      </q-card-section>
+      </q-form>
+
+    </q-card>
+
+    <!-- q-page-sticky position="bottom-right" :offset="[18, 18]">
       <q-btn fab icon="west" color="positive" :to="{path: '/'}" />
-    </q-page-sticky>
+    </q-page-sticky -->
   </div>
 </q-page>
 </template>

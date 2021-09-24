@@ -1,5 +1,4 @@
 <template>
-<div>
   <q-table
       title="Árboles"
       :rows="rows"
@@ -29,9 +28,8 @@
         </q-td>
       </template>
     </q-table>
-    <div style="height: 100px">&nbsp;</div>
-</div>
 </template>
+
 <script>
 import { defineComponent, computed } from 'vue'
 import { useStore } from 'vuex'

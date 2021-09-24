@@ -8,9 +8,9 @@
     >
     <TreeList title="Árboles" v-show="trees_exist"></TreeList>
 
-    <q-page-sticky position="bottom-right" :offset="[18, 18]">
+    <!-- q-page-sticky position="bottom-right" :offset="[18, 18]">
       <q-btn fab icon="add" color="positive" :to="{path: '/tree/new'}" />
-    </q-page-sticky>
+    </q-page-sticky -->
   </q-page>
 </template>
 

@@ -11,7 +11,6 @@ export function saveTree(state, treeData) {
 
 export function addLocationPoint(state, location) {
   if (location) {
-    console.log('New Geolocation Point!', location, state)
     state.location_data.push(location)
   }
 }
