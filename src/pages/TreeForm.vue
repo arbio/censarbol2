@@ -1,5 +1,5 @@
 <template>
-<q-page class="flex column items-center">
+<q-page class="flex column">
   <div class="q-pa-md q-gutter-md">
     <q-carousel
       v-if="!(data.photos==undefined) && data.photos.length > 0"
@@ -16,7 +16,7 @@
     >
       <q-carousel-slide class="column no-wrap" v-for="photo,index in data.photos" :name="index" :key="photo">
         <div class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap">
-          <q-img class="rounded-borders full-height" :src="objUris[photo]">
+          <q-img class="rounded-borders" fit="scale-down" :src="objUris[photo]">
             <q-icon
                 name="delete"
                 color="negative"
@@ -32,7 +32,7 @@
 
       <q-form
         @submit="onSubmit"
-        class="q-gutter-md"
+        class="q-gutter-md flex column"
       >
       <q-card-section>
       <q-toolbar>
@@ -42,8 +42,11 @@
         </q-btn-group>
       </q-toolbar>
       </q-card-section>
-	<q-separator />
+
+      <q-separator />
+
       <q-card-section>
+        <div class="q-gutter-y-md">
         <q-input
           filled
           v-for="field,index in fields"
@@ -52,14 +55,17 @@
           :label="field.label"
           :hint="field.hint"
         />
+        </div>
         <div>
-          <q-btn class="glossy" label="Enviar" type="submit" color="secondary"/>
+          <q-btn class="glossy" label="Guardar" type="submit" color="secondary"/>
         </div>
         </q-card-section>
-	<q-separator />
+
+        <q-separator />
+
         <q-card-section>
         <div>
-          <q-btn class="glossy" rounded color="red-8" label="Borrar" @click="removeItem" />
+          <q-btn class="glossy" rounded color="red-8" label="Eliminar" @click="removeItem" />
         </div>
       </q-card-section>
       </q-form>
@@ -105,15 +111,21 @@ export default defineComponent({
         photos: []
       })
     }
-    function onSubmit() {
-      console.log("submitted")
+    function onSubmit(ev) {
+      console.log("submitted", data.name)
       $store.commit("trees/saveTree", data)
-      $router.push ('/')
+      if ( data.name!=context.attrs.treeId && context.attrs.treeId!='new') {
+        $store.commit("trees/removeTree", context.attrs.treeId)
+        console.log('removing', context.attrs.treeId)
+      }
+      $router.push ('/list')
     }
     function removeItem(ev) {
-      $store.commit("trees/removeTree", thisTree.name)
-      console.log("removed", thisTree.name)
-      $router.push ('/')
+      if (thisTree) {
+        $store.commit("trees/removeTree", thisTree.name)
+        console.log("removed", thisTree.name)
+      }
+      $router.push ('/list')
     }
     async function removePhoto(index) {
       console.log('removing photo', data.photos[index])
@@ -142,7 +154,8 @@ export default defineComponent({
           quality: 90,
           resultType: CameraResultType.Uri,
           direction: CameraDirection.Front,
-          webUseInput: mobileAndTabletCheck()
+          webUseInput: mobileAndTabletCheck(),
+          saveToGallery: true
       })
       let datestring = new Date().toISOString()
       let filename = '/photos/tree_' + datestring + '.' + image.format

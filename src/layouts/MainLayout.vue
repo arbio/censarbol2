@@ -15,19 +15,17 @@
           Censa Árbol
         </q-toolbar-title>
 
-        <div>
-
-        <q-toggle
+        <div v-if="this.currentRoute.fullPath==='/list'">
+        <q-checkbox
           v-model="gps"
           dense
           round
-	  color="red"
+          color="info"
           icon="place"
           aria-label="GPS"
           @update:model-value="toggleGPS"
         />
-
-          GPS</div>
+        <q-icon name="place" />GPS</div>
       </q-toolbar>
     </q-header>
 
@@ -35,7 +33,7 @@
       <q-toolbar>
         <q-btn-group push class="q-mx-auto">
           <!-- q-btn push text-color="black" color="positive" label="Inicio" icon="nature_people" :to="{path: '/'}" / -->
-          <q-btn push :disable="this.currentRoute.fullPath==='/'" text-color="black" color="positive" label="Inventario" icon="list"  :to="{path: '/'}" />
+          <q-btn push :disable="this.currentRoute.fullPath==='/list'" text-color="black" color="positive" label="Inventario" icon="list"  :to="{path: '/list'}" />
           <q-btn push :disable="this.currentRoute.fullPath.startsWith('/tree/')" text-color="black" color="positive" label="Nuevo" icon="nature" :to="{path: '/tree/new'}" />
         </q-btn-group>
       </q-toolbar>
@@ -80,13 +78,13 @@ const linksList = [
     title: 'Inicio',
     caption: 'Información general',
     icon: 'nature_people',
-    link: '#'
+    link: '#/'
   },
   {
     title: 'Lista',
     caption: 'Inventario completo',
     icon: 'list',
-    link: '#'
+    link: '#/list'
   },
   {
     title: 'Exportar',
@@ -131,7 +129,7 @@ export default defineComponent({
           console.log("enable")
           motionHandle = await Motion.addListener('orientation', event => {
             $store.commit("trees/addOrientationData", event)
-	        })
+          })
           let callbackID = await Geolocation.watchPosition({
             enableHighAccuracy: true,
             timeout: 250},
