@@ -37,7 +37,8 @@ import { useRouter } from 'vue-router'
 import { distance, bearing } from '../../util.js'
 
 export default defineComponent({
-  setup () {
+  setup (props) {
+    console.log(props.filter)
     const $store = useStore()
     const $router = useRouter()
     const rows = $store.state.trees.inventory
