@@ -38,7 +38,6 @@ import { distance, bearing } from '../../util.js'
 
 export default defineComponent({
   setup (props) {
-    console.log(props.filter)
     const $store = useStore()
     const $router = useRouter()
     const rows = $store.state.trees.inventory
@@ -79,7 +78,7 @@ export default defineComponent({
     let columns = computed(
         ()=>[
             {name: 'name', label: "ID", field: 'name', sortable: true},
-            {name: 'alt', label: "Alt.", field: 'alt', sortable: true},
+            {name: 'alt', label: "Diá.", field: 'dia', sortable: true},
             {name: 'dir', label: "Dir.", field: 'dir', align: 'center'},
             {name: 'dist', label: "Dist.", sortable: true, 
             'field': calcDist,

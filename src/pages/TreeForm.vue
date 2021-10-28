@@ -63,7 +63,8 @@
           :rules="field.rules"
           :mask="field.mask"
           :hide-hint="true"
-          :readonly="field.type=='option'"
+          :readonly="field.readonly"
+          @change="changed(field)"
           :type="field.type!='date'? field.type:''"
           :list="field.list"
         >
@@ -181,6 +182,15 @@ export default defineComponent({
         directory: Directory.External
       })
     }
+    function changed(field) {
+      if (!!field.recalc) {
+        for (let field of fields) {
+          if (field.autocalc) {
+            data[field.name] = field.autocalc(data)
+          }
+        }
+      }
+    }
     async function getLocations () {
       let coordinates
       try {
@@ -244,7 +254,7 @@ export default defineComponent({
         }
       }
     })
-    return { data, fields, onSubmit, removeItem, getLocations, getPhoto,
+    return { data, fields, onSubmit, removeItem, getLocations, getPhoto, changed,
              objUris, onMounted, removePhoto, slide, iconfor, especies, cientificos }
   }
 })
