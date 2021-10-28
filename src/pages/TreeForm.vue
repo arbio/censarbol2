@@ -55,11 +55,25 @@
           :label="field.label"
           :hint="field.hint"
           :rules="field.rules"
+          :mask="field.mask"
+          :hide-hint="true"
+          :readonly="field.type=='option'"
+          :type="field.type!='date'? field.type:''"
         >
-        <template v-if="field.type=='date'" v-slot:append>
-          <q-icon name="event" class="cursor-pointer">
+        <template v-if="['date', 'option'].includes(field.type)" v-slot:append>
+          <q-icon :name="iconfor[field.type]" class="cursor-pointer">
             <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-              <q-date v-model="data[fields[index].name]">
+              <q-option-group
+                        v-if="field.type=='option'"
+                        :name="field.name"
+                        v-model="data[fields[index].name]"
+                        :options="field.options"
+                        type="checkbox"
+                        color="primary"
+                      />
+              <q-date v-model="data[fields[index].name]"
+                        v-if="field.type=='date'"
+              >
                 <div class="row items-center justify-end">
                   <q-btn v-close-popup label="Close" color="primary" flat />
                 </div>
@@ -67,6 +81,7 @@
             </q-popup-proxy>
           </q-icon>
         </template>
+
         </q-input>
         </div>
         <div>
@@ -109,6 +124,7 @@ export default defineComponent({
     const $store = useStore()
     const $router = useRouter()
     const id = context.attrs.treeId
+    let iconfor = {'date': 'event', 'option': 'rule'}
     let data
     let fields = model.inventory
     let objUris = reactive({})
@@ -120,10 +136,11 @@ export default defineComponent({
     }
     else {
       data = reactive({
-        name: '',
-        photos: []
+        name: ''
       })
     }
+    if (data.photos==undefined) data.photos = []
+    if (!Array.isArray(data.relevancia)) data.relevancia = []
     function onSubmit(ev) {
       console.log("submitted", data.name)
       $store.commit("trees/saveTree", data)
@@ -189,6 +206,14 @@ export default defineComponent({
       console.log(image)
     }
     onMounted( async function() {
+      if (data.date===undefined){
+        let today = new Date()
+        let month = today.getMonth()+1
+        if (month <= 9) month = '0' + month
+        let day = today.getDate()
+        if (day <= 9) day = '0' + day
+        data.date = today.getFullYear() + '/' + month + '/' + day
+      }
       for (let photo of data.photos || []) {
         console.log(photo)
         try {
@@ -205,7 +230,7 @@ export default defineComponent({
       }
     })
     return { data, fields, onSubmit, removeItem, getLocations, getPhoto,
-             objUris, onMounted, removePhoto, slide }
+             objUris, onMounted, removePhoto, slide, iconfor }
   }
 })
 </script>
