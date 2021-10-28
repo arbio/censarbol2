@@ -1,5 +1,11 @@
 <template>
 <q-page class="flex column">
+  <datalist id="nombrescomunes">
+    <option v-for="especie in especies" v-bind:key="especie" :value="especie" />
+  </datalist>
+  <datalist id="nombrescientificos">
+    <option v-for="cientifico in cientificos" v-bind:key="cientifico" :value="cientifico" />
+  </datalist>
   <div class="q-pa-md q-gutter-md">
     <q-carousel
       v-if="!(data.photos==undefined) && data.photos.length > 0"
@@ -59,6 +65,7 @@
           :hide-hint="true"
           :readonly="field.type=='option'"
           :type="field.type!='date'? field.type:''"
+          :list="field.list"
         >
         <template v-if="['date', 'option'].includes(field.type)" v-slot:append>
           <q-icon :name="iconfor[field.type]" class="cursor-pointer">
@@ -108,7 +115,7 @@
 </template>
 
 <script>
-import { defineComponent, reactive, ref, onMounted } from 'vue'
+import { defineComponent, reactive, ref, onMounted, computed } from 'vue'
 import { Geolocation } from '@capacitor/geolocation'
 import { Camera, CameraResultType, CameraDirection } from '@capacitor/camera'
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem'
@@ -126,6 +133,14 @@ export default defineComponent({
     const id = context.attrs.treeId
     let iconfor = {'date': 'event', 'option': 'rule'}
     let data
+    let especies = computed(
+      ()=>[... new Set($store.state.trees.inventory.filter(val=>!!val.especie)
+                                      .map(val=>val.especie||''))]
+    )
+    let cientificos = computed(
+      ()=>[... new Set($store.state.trees.inventory.filter(val=>!!val.cientifico)
+                                      .map(val=>val.cientifico||''))]
+    )
     let fields = model.inventory
     let objUris = reactive({})
     let slide = ref(0)
@@ -230,7 +245,7 @@ export default defineComponent({
       }
     })
     return { data, fields, onSubmit, removeItem, getLocations, getPhoto,
-             objUris, onMounted, removePhoto, slide, iconfor }
+             objUris, onMounted, removePhoto, slide, iconfor, especies, cientificos }
   }
 })
 </script>
