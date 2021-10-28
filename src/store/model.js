@@ -1,6 +1,7 @@
 export default {
     inventory:
     [
+        { name: 'date', label: 'Fecha', hint: 'Día de Censo', type: 'date', rules: ['date']},
         { name: 'name', label: 'Individuo', hint: 'Identificador único' },
         { name: 'location_latitude', label: 'Latitud', hint: 'GPS' },
         { name: 'location_longitude', label: 'Longitud', hint: 'GPS' },

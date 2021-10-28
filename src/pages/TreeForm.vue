@@ -54,7 +54,20 @@
           :key="fields[index].name"
           :label="field.label"
           :hint="field.hint"
-        />
+          :rules="field.rules"
+        >
+        <template v-if="field.type=='date'" v-slot:append>
+          <q-icon name="event" class="cursor-pointer">
+            <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+              <q-date v-model="data[fields[index].name]">
+                <div class="row items-center justify-end">
+                  <q-btn v-close-popup label="Close" color="primary" flat />
+                </div>
+              </q-date>
+            </q-popup-proxy>
+          </q-icon>
+        </template>
+        </q-input>
         </div>
         <div>
           <q-btn class="glossy" label="Guardar" type="submit" color="secondary"/>
