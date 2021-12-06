@@ -1,4 +1,12 @@
 export function saveTree(state, treeData) {
+    // Request persistent storage for site
+    if (navigator.storage && navigator.storage.persist) {
+      async function asktoPersist() {
+        const isPersisted = await navigator.storage.persist();
+        console.log(`Persisted storage granted: ${isPersisted}`);
+      }
+      asktoPersist()
+    }
     if (state.inventory.filter((item)=>item.name==treeData.name).length > 0) {
       let item = state.inventory.find((item)=>item.name==treeData.name)
       Object.assign(item, treeData)
