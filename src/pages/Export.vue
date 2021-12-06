@@ -104,6 +104,11 @@ export default defineComponent({
       };
       xhr.send(form);
 
+      if (files.length==0) {
+        this.curState = "done"
+        return
+      }
+
       let photofolderinfo = await gapi.client.drive.files.create({
         'mimeType': "application/vnd.google-apps.folder",
         'parents': [folderinfo.result.id],
