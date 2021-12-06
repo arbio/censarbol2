@@ -24,7 +24,8 @@ import { defineComponent, getCurrentInstance, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useQuasar } from 'quasar'
 import { Filesystem, Directory } from '@capacitor/filesystem'
-import { sleep } from '../../util.js'
+import { sleep, toGeoJSON } from '../../util.js'
+import { saveAs } from 'file-saver'
 
 export default defineComponent({
   setup() {
@@ -58,7 +59,6 @@ export default defineComponent({
 
     async function uploadFiles() {
       this.curState = "starting"
-
       if (!$gapi.isAuthenticated()) {
         $gapi.login().then(({ currentUser, gapi, hasGrantedScopes }) => {
           console.log({ currentUser, gapi, hasGrantedScopes })
@@ -70,11 +70,11 @@ export default defineComponent({
         'name': this.inventory_name
       });
 
-      var fileContent = JSON.stringify($store.state.trees.inventory)
-      var file = new Blob([fileContent], {type: 'text/plain'});
+      var fileContent = toGeoJSON($store.state.trees.inventory)
+      var file = new Blob([fileContent], {type: 'text/plain'})
       var metadata = {
-          'name': 'inventario.json', // Filename at Google Drive
-          'mimeType': 'text/json', // mimeType at Google Drive
+          'name': 'inventario.geojson', // Filename at Google Drive
+          'mimeType': 'json/geojson', // mimeType at Google Drive
           'parents': [folderinfo.result.id], // Folder ID at Google Drive
       };
 
