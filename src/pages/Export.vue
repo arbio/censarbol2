@@ -83,14 +83,15 @@ export default defineComponent({
       form.append('metadata', new Blob([JSON.stringify(metadata)], {type: 'application/json'}));
       form.append('file', file);
 
+      let files
       try {
-        const files = (await Filesystem.readdir({
+        files = (await Filesystem.readdir({
           path: 'photos/',
           directory: Directory.External
         })).files
       }
       catch {
-        const files = []
+        files = []
       }
 
       let xhr = new XMLHttpRequest();
