@@ -83,10 +83,15 @@ export default defineComponent({
       form.append('metadata', new Blob([JSON.stringify(metadata)], {type: 'application/json'}));
       form.append('file', file);
 
-      const files = (await Filesystem.readdir({
-        path: 'photos/',
-        directory: Directory.External
-      })).files
+      try {
+        const files = (await Filesystem.readdir({
+          path: 'photos/',
+          directory: Directory.External
+        })).files
+      }
+      catch {
+        const files = []
+      }
 
       let xhr = new XMLHttpRequest();
       xhr.open('post', 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id');
