@@ -101,13 +101,12 @@ export default defineComponent({
       xhr.onload = () => {
         this.progress = 1/(files.length+1)*100
         this.curState = "uploading"
+        if (files.length==0) {
+          this.curState = "done"
+          return
+        }
       };
       xhr.send(form);
-
-      if (files.length==0) {
-        this.curState = "done"
-        return
-      }
 
       let photofolderinfo = await gapi.client.drive.files.create({
         'mimeType': "application/vnd.google-apps.folder",
