@@ -56,6 +56,7 @@
         <q-input
           filled
           v-for="field,index in fields"
+          v-show="!field.hidden"
           v-model="data[fields[index].name]"
           :key="fields[index].name"
           :label="field.label"
@@ -124,7 +125,7 @@ import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { extend } from 'quasar'
 import model from '../store/model'
-import { mobileAndTabletCheck } from '../../util.js'
+import { mobileAndTabletCheck } from '../util.js'
 
 export default defineComponent({
   name: 'TreeForm',
@@ -203,6 +204,7 @@ export default defineComponent({
       $store.commit("trees/addLocationPoint", coordinates)
       this.data.location_latitude = coordinates.coords.latitude
       this.data.location_longitude = coordinates.coords.longitude
+      this.changed({recalc:true})
     }
     async function getPhoto() {
       const image = await Camera.getPhoto({

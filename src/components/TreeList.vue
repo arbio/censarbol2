@@ -34,7 +34,7 @@
 import { defineComponent, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import { distance, bearing } from '../../util.js'
+import { distance, bearing } from '../util.js'
 
 export default defineComponent({
   setup (props) {

@@ -21,6 +21,7 @@
     "core-js": "^3.6.5",
     "file-saver": "^2.0.5",
     "quasar": "^2.0.0",
+    "utm-latlng": "^1.0.6",
     "vue-gapi": "^2.0.0",
     "vuex": "^4.0.1"
   },

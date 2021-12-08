@@ -24,7 +24,7 @@ import { defineComponent, getCurrentInstance, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useQuasar } from 'quasar'
 import { Filesystem, Directory } from '@capacitor/filesystem'
-import { sleep, toGeoJSON } from '../../util.js'
+import { sleep, toGeoJSON } from '../util.js'
 import { saveAs } from 'file-saver'
 
 export default defineComponent({
