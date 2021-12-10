@@ -62,7 +62,9 @@ export default defineComponent({
       if (!$gapi.isAuthenticated()) {
         $gapi.login().then(({ currentUser, gapi, hasGrantedScopes }) => {
           console.log({ currentUser, gapi, hasGrantedScopes })
+          this.uploadFiles()
         })
+        return
       }
       const client = await $gapi.getGapiClient()
       let folderinfo = await gapi.client.drive.files.create({
@@ -106,6 +108,12 @@ export default defineComponent({
           return
         }
       };
+      xhr.onerror = e => {
+	console.error(e)
+      }
+      xhr.onprogress = e => {
+	console.log(e)
+      }
       xhr.send(form);
 
       let photofolderinfo = await gapi.client.drive.files.create({
