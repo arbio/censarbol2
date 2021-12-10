@@ -11,6 +11,10 @@
       <q-card-section>
         <button color="negative" v-if="curState==='idle'" @click="prompt_reset">Vaciar inventario actual</button>
       </q-card-section>
+      <q-card-section>
+        O importar un registro anterior:
+        <q-file v-model="importFile" @change="importDB" label="Archivo geoJSON" />
+      </q-card-section>
     </q-card>
     <q-circular-progress
         :indeterminate="curState==='starting'"
@@ -46,6 +50,7 @@ export default defineComponent({
     let progress = ref(0)
     const datestring = (new Date()).toISOString().replace(/:|-/g, '').substring(0,13)
     let inventory_name = ref('Censo_' + datestring)
+    let importFile = ref(null)
 
     function prompt () {
       $q.dialog({
@@ -194,7 +199,19 @@ export default defineComponent({
       $store.commit("trees/resetDB")
     }
 
-    return { uploadFiles, curState, progress, prompt, prompt_reset, inventory_name, resetDB }
+    async function importDB() {
+      console.log('lets import!')
+      console.log(importFile)
+      let read = new FileReader()
+      read.readAsBinaryString(importFile.value)
+      read.onloadend = function(){
+        let importedGeoJSON = JSON.parse(read.result)
+        console.log(importedGeoJSON)
+      }
+    }
+
+    return { uploadFiles, importFile, curState, progress,
+      prompt, prompt_reset, inventory_name, resetDB, importDB }
   }
 })
 </script>
