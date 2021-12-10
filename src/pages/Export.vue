@@ -61,10 +61,10 @@ export default defineComponent({
       this.curState = "starting"
       if (!$gapi.isAuthenticated()) {
         $gapi.login().then(({ currentUser, gapi, hasGrantedScopes }) => {
+          console.log('OKOKOK')
           console.log({ currentUser, gapi, hasGrantedScopes })
-          this.uploadFiles()
+          setTimeout(this.uploadFiles)
         })
-        return
       }
       const client = await $gapi.getGapiClient()
       let folderinfo = await gapi.client.drive.files.create({
@@ -108,11 +108,11 @@ export default defineComponent({
           return
         }
       };
-      xhr.onerror = e => {
-	console.error(e)
+      xhr.onerror = () => {
+        console.error('Upload failed.');
       }
-      xhr.onprogress = e => {
-	console.log(e)
+      xhr.onprogress = event => {
+        console.log(`Uploaded ${event.loaded} of ${event.total} bytes`);
       }
       xhr.send(form);
 
@@ -150,6 +150,12 @@ export default defineComponent({
           this.progress = (1+n) /(files.length+1)*100
           if (n == files.length)
             this.curState = "done"
+        }
+        xhr.onerror = () => {
+          console.error('Upload failed.');
+        }
+        xhr.onprogress = event => {
+          console.log(`Uploaded ${event.loaded} of ${event.total} bytes`);
         }
         while(true) {
           await sleep(500)
