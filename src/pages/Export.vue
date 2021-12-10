@@ -60,13 +60,12 @@ export default defineComponent({
     async function uploadFiles() {
       this.curState = "starting"
       if (!$gapi.isAuthenticated()) {
-        console.log('Authenticating!')
         $gapi.login().then(({ currentUser, gapi, hasGrantedScopes }) => {
           console.log('OKOKOK')
           console.log({ currentUser, gapi, hasGrantedScopes })
-          //setTimeout(this.uploadFiles)
+          setTimeout(this.uploadFiles)
         })
-        //return
+        return
       }
       const client = await $gapi.getGapiClient()
       let folderinfo = await gapi.client.drive.files.create({
@@ -102,7 +101,7 @@ export default defineComponent({
       xhr.open('post', 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id');
       xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
       xhr.responseType = 'json';
-      xhr.onload = () => {
+      xhr.upload.onload = () => {
         this.progress = 1/(files.length+1)*100
         this.curState = "uploading"
         if (files.length==0) {
@@ -110,10 +109,10 @@ export default defineComponent({
           return
         }
       };
-      xhr.onerror = () => {
+      xhr.upload.onerror = () => {
         console.error('Upload failed.');
       }
-      xhr.onprogress = event => {
+      xhr.upload.onprogress = event => {
         console.log(`Uploaded ${event.loaded} of ${event.total} bytes`);
       }
       xhr.send(form);
@@ -146,18 +145,17 @@ export default defineComponent({
         xhr.open('post', 'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id');
         xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
         xhr.responseType = 'json';
-        xhr.onload = () => {
-          console.log(xhr.response.id); // Retrieve uploaded file ID.
+        xhr.upload.onload = () => {
           n = n + 1
           this.progress = (1+n) /(files.length+1)*100
           if (n == files.length)
             this.curState = "done"
         }
-        xhr.onerror = () => {
+        xhr.upload.onerror = () => {
           console.error('Upload failed.');
         }
-        xhr.onprogress = event => {
-          console.log(`Uploaded ${event.loaded} of ${event.total} bytes`);
+        xhr.upload.onprogress = event => {
+	  this.progress = this.progress + event.loaded/event.total
         }
         while(true) {
           await sleep(500)
