@@ -1,6 +1,6 @@
 <template>
   <q-page class="flex column items-center">
-    <h1>Herramientas</h1>
+    <h1>Gestión</h1>
     <q-card class="text-center">
       <q-card-section>
         <button color="warning" v-if="curState==='idle'" @click="prompt">Enviar a Google Drive</button>
