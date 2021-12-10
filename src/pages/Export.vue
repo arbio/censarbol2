@@ -63,7 +63,7 @@ export default defineComponent({
         $gapi.login().then(({ currentUser, gapi, hasGrantedScopes }) => {
           console.log('OKOKOK')
           console.log({ currentUser, gapi, hasGrantedScopes })
-          setTimeout(this.uploadFiles)
+          this.uploadFiles()
         })
         return
       }
@@ -113,7 +113,7 @@ export default defineComponent({
         console.error('Upload failed.');
       }
       xhr.upload.onprogress = event => {
-        console.log(`Uploaded ${event.loaded} of ${event.total} bytes`);
+  	this.progress = 1+event.loaded/event.total/(files.length+1)*100
       }
       xhr.send(form);
 
@@ -155,7 +155,7 @@ export default defineComponent({
           console.error('Upload failed.');
         }
         xhr.upload.onprogress = event => {
-	  this.progress = this.progress + event.loaded/event.total
+          this.progress = (1+n+event.loaded/event.total) / (files.length + 1)*100
         }
         while(true) {
           await sleep(500)
