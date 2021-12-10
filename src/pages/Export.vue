@@ -65,6 +65,7 @@ export default defineComponent({
           console.log({ currentUser, gapi, hasGrantedScopes })
           setTimeout(this.uploadFiles)
         })
+        return
       }
       const client = await $gapi.getGapiClient()
       let folderinfo = await gapi.client.drive.files.create({
