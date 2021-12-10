@@ -87,7 +87,7 @@ const linksList = [
     link: '#/list'
   },
   {
-    title: 'Herramientas',
+    title: 'Gestión',
     caption: 'Exportar y gestionar inventarios',
     icon: 'publish',
     link: '#/export'
