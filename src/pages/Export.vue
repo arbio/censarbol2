@@ -60,12 +60,13 @@ export default defineComponent({
     async function uploadFiles() {
       this.curState = "starting"
       if (!$gapi.isAuthenticated()) {
+        console.log('Authenticating!')
         $gapi.login().then(({ currentUser, gapi, hasGrantedScopes }) => {
           console.log('OKOKOK')
           console.log({ currentUser, gapi, hasGrantedScopes })
-          setTimeout(this.uploadFiles)
+          //setTimeout(this.uploadFiles)
         })
-        return
+        //return
       }
       const client = await $gapi.getGapiClient()
       let folderinfo = await gapi.client.drive.files.create({
