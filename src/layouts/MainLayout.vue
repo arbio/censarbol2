@@ -87,8 +87,8 @@ const linksList = [
     link: '#/list'
   },
   {
-    title: 'Exportar',
-    caption: 'Descargar inventario y fotos',
+    title: 'Herramientas',
+    caption: 'Exportar y gestionar inventarios',
     icon: 'publish',
     link: '#/export'
   },

@@ -1,3 +1,5 @@
+import { Filesystem, Directory } from '@capacitor/filesystem'
+
 export function saveTree(state, treeData) {
     // Request persistent storage for site
     if (navigator.storage && navigator.storage.persist) {
@@ -35,4 +37,29 @@ export function setWatchId(state, callbackID) {
 export function removeTree(state, treeName) {
   const removeIndex = state.inventory.findIndex(tree => tree.name === treeName)
   state.inventory.splice(removeIndex, 1)
+}
+
+export function resetDB(state) {
+  let files
+  try {
+    async function listPhotos() {
+      files = (await Filesystem.readdir({
+          path: 'photos/',
+          directory: Directory.External
+        })).files
+      console.log(files)
+      for (let item of files) {
+        await Filesystem.deleteFile({
+          path: 'photos/'+item,
+          directory: Directory.External
+        })
+      }
+    }
+    listPhotos()
+  }
+  catch {
+    files = []
+  }
+  state.inventory = []
+  console.warn('RmRmRm')
 }

@@ -1,8 +1,17 @@
 <template>
   <q-page class="flex column items-center">
-    <h1>Exportar</h1>
-    <button v-if="curState==='idle'" @click="prompt">Enviar a Google Drive</button>
-    <br>
+    <h1>Herramientas</h1>
+    <q-card class="text-center">
+      <q-card-section>
+        <button color="warning" v-if="curState==='idle'" @click="prompt">Enviar a Google Drive</button>
+      </q-card-section>
+    </q-card>
+    <hr>
+    <q-card class="text-center">
+      <q-card-section>
+        <button color="negative" v-if="curState==='idle'" @click="prompt_reset">Vaciar inventario actual</button>
+      </q-card-section>
+    </q-card>
     <q-circular-progress
         :indeterminate="curState==='starting'"
         v-if="curState!=='idle'" 
@@ -50,6 +59,21 @@ export default defineComponent({
         persistent: true
       }).onOk(data => {
         this.uploadFiles()
+      }).onCancel(() => {
+        console.log('>>>> Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
+    }
+
+    function prompt_reset () {
+      $q.dialog({
+        title: 'Vaciar inventario actual',
+        message: 'Elimina los registros y fotos. Asegúrese de haber exportado sus datos.',
+        cancel: true,
+        persistent: true
+      }).onOk(data => {
+        this.resetDB()
       }).onCancel(() => {
         console.log('>>>> Cancel')
       }).onDismiss(() => {
@@ -165,7 +189,12 @@ export default defineComponent({
         z = z + 1
       }
     }
-    return { uploadFiles, curState, progress, prompt, inventory_name }
+
+    async function resetDB() {
+      $store.commit("trees/resetDB")
+    }
+
+    return { uploadFiles, curState, progress, prompt, prompt_reset, inventory_name, resetDB }
   }
 })
 </script>
