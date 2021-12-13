@@ -5,7 +5,9 @@
       :columns="columns"
       row-key="name"
       @row-click="editTree"
-      :pagination="{sortBy: 'dist'}"
+      :hide-pagination="true"
+      :pagination="{sortBy: 'dist',
+                    rowsPerPage: 0 }"
     >
      <template v-slot:body-cell-dir="props">
         <q-td :props="props">
