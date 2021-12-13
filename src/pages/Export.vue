@@ -1,15 +1,12 @@
 <template>
   <q-page class="flex column items-center">
     <h1>Gestión</h1>
-    <q-card class="text-center">
+    <q-card  v-if="curState==='idle'" class="text-center">
       <q-card-section>
-        <button color="warning" v-if="curState==='idle'" @click="prompt">Enviar a Google Drive</button>
+        <q-btn color="warning" @click="prompt()">Enviar a Google Drive</q-btn>
       </q-card-section>
-    </q-card>
-    <hr>
-    <q-card class="text-center">
       <q-card-section>
-        <button color="negative" v-if="curState==='idle'" @click="prompt_reset">Vaciar inventario actual</button>
+        <q-btn color="negative" @click="prompt_reset()">Vaciar inventario actual</q-btn>
       </q-card-section>
       <q-card-section>
         O importar un registro anterior:
@@ -131,7 +128,7 @@ export default defineComponent({
       xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
       xhr.responseType = 'json';
       xhr.upload.onload = () => {
-        this.progress = 1/(files.length+1)*100
+        this.progress = 0
         this.curState = "uploading"
         if (files.length==0) {
           this.curState = "done"
@@ -142,7 +139,7 @@ export default defineComponent({
         console.error('Upload failed.');
       }
       xhr.upload.onprogress = event => {
-  	this.progress = 1+event.loaded/event.total/(files.length+1)*100
+        this.progress = 0+event.loaded/event.total/(files.length+1)*100
       }
       xhr.send(form);
 
