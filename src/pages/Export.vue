@@ -1,6 +1,13 @@
 <template>
   <q-page class="flex column items-center">
-    <h1>Gestión</h1>
+    <h2>Gestión<br>
+      <q-badge class="text-h3"
+              color="info"
+              transparent
+              v-if="trees_exist"
+              :label="$store.state.trees.inventory.length +' items'"
+      />
+    </h2>
     <q-card  v-if="curState==='idle'" class="text-center">
       <q-card-section>
         <q-btn icon="cloud_upload" color="warning" @click="prompt()">Enviar a<br>Google<br>Drive</q-btn>
@@ -33,7 +40,7 @@
 </template>
 
 <script>
-import { defineComponent, getCurrentInstance, ref } from 'vue'
+import { defineComponent, getCurrentInstance, ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useQuasar } from 'quasar'
 import { Filesystem, Directory } from '@capacitor/filesystem'
@@ -201,12 +208,19 @@ export default defineComponent({
 
     async function importDB() {
       console.log('lets import!')
-      console.log(importFile)
       let read = new FileReader()
       read.readAsBinaryString(importFile.value)
       read.onloadend = function(){
         let importedGeoJSON = JSON.parse(read.result)
         console.log(importedGeoJSON)
+        for (let feature of importedGeoJSON.features) {
+          let tree = {
+            'location_latitude': feature.geometry.coordinates[1],
+            'location_longitude': feature.geometry.coordinates[0],
+            ...feature.properties
+          }
+          $store.commit("trees/saveTree", tree)
+        }
       }
     }
 
@@ -216,8 +230,12 @@ export default defineComponent({
       saveAs(file, 'inventario.geojson')
     }
 
+    const trees_exist = computed({
+      get: () => ($store.state.trees.inventory.length > 0)
+    })
+
     return { uploadFiles, importFile, curState, progress, saveJSON,
-      prompt, prompt_reset, inventory_name, resetDB, importDB }
+      trees_exist, prompt, prompt_reset, inventory_name, resetDB, importDB }
   }
 })
 </script>

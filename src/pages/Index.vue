@@ -8,7 +8,7 @@
     <div class="absolute-full text-subtitle2 flex flex-center column">
       <h2>Inventario</h2>
       <q-badge class="text-h3"
-              color="accent"
+              color="info"
               transparent
               v-if="trees_exist"
               :label="$store.state.trees.inventory.length + ' registros'"
