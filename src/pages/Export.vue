@@ -3,14 +3,17 @@
     <h1>Gestión</h1>
     <q-card  v-if="curState==='idle'" class="text-center">
       <q-card-section>
-        <q-btn color="warning" @click="prompt()">Enviar a Google Drive</q-btn>
+        <q-btn icon="cloud_upload" color="warning" @click="prompt()">Enviar a<br>Google<br>Drive</q-btn>
       </q-card-section>
       <q-card-section>
-        <q-btn color="negative" @click="prompt_reset()">Vaciar inventario actual</q-btn>
+        <q-btn icon="delete" color="negative" @click="prompt_reset()">Vaciar<br>inventario<br>actual</q-btn>
       </q-card-section>
       <q-card-section>
-        O importar un registro anterior:
-        <q-file v-model="importFile" @change="importDB" label="Archivo geoJSON" />
+        <q-icon name="upload"></q-icon>
+        <q-file bg-color="secondary" v-model="importFile" @change="importDB" label="Importar archivo GeoJSON" />
+      </q-card-section>
+      <q-card-section>
+        <q-btn icon="download" color="accent" @click="saveJSON">Guardar<br>inventario<br>localmente</q-btn>
       </q-card-section>
     </q-card>
     <q-circular-progress
@@ -207,7 +210,13 @@ export default defineComponent({
       }
     }
 
-    return { uploadFiles, importFile, curState, progress,
+    function saveJSON(){
+      var fileContent = toGeoJSON($store.state.trees.inventory)
+      var file = new Blob([fileContent], {type: 'text/plain'})
+      saveAs(file, 'inventario.geojson')
+    }
+
+    return { uploadFiles, importFile, curState, progress, saveJSON,
       prompt, prompt_reset, inventory_name, resetDB, importDB }
   }
 })
