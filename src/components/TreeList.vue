@@ -14,6 +14,7 @@
             <q-knob
                 readonly
                 v-if="calcBearing(props.row)"
+                v-show="calcDist(props.row)>=0.02"
                 :angle="calcBearing(props.row)"
                 v-model="one"
                 size="50px"
@@ -22,6 +23,14 @@
                 track-color="brown"
                 class="q-ma-md"
                 />
+            <q-icon
+                v-show="calcDist(props.row)<0.02 && calcDist(props.row)>=0.01"
+                 class="text-orange" style="font-size: 4em;"
+                name="gps_fixed" /> 
+            <q-icon
+                v-show="calcDist(props.row)<0.01 && calcDist(props.row)>=0"
+                 class="text-green" style="font-size: 4em;"
+                name="gps_fixed" /> 
         </q-td>
       </template>
      <template v-slot:body-cell-dist="props">
