@@ -35,7 +35,12 @@
       </template>
      <template v-slot:body-cell-dist="props">
         <q-td :props="props">
+          <q-label v-show="calcDist(props.row)<1">
+            <i>{{ calcDist(props.row) * 1000 }} m.</i>
+          </q-label>
+          <q-label v-show="calcDist(props.row)>=1">
             {{ calcDist(props.row) }} Km.
+          </q-label>
         </q-td>
       </template>
     </q-table>
