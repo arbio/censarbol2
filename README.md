@@ -1,6 +1,6 @@
 # Censa Árbol (censarbol2)
 
-Aplicación para hacer registro de árboles
+Aplicación para hacer registro de árboles. Realizada por encargo para Arbio.
 
 ## Install the dependencies
 ```bash
