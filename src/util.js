@@ -80,6 +80,9 @@ export function toGeoJSON(inventory) {
     if (relevancia) {
       props.relevancia = relevancia.join(", ")
     }
+    if (photos) {
+      props.relevancia = photos.join(", ")
+    }
     return {
       "geometry": {
         "type": "Point",
