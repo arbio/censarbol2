@@ -14,7 +14,7 @@ export default {
     [
         { name: 'date', label: 'Fecha', hint: 'Día de Censo', type: 'date', 
           rules: ['date'], mask: 'date' },
-        { name: 'name', label: 'Individuo', hint: 'Identificador único',
+        { name: 'name', label: 'Código', hint: 'Identificador único',
           rules: [value=>!!value || 'Campo necesario'] },
         { name: 'location_latitude', label: 'Latitud', hint: 'GPS', recalc:true },
         { name: 'location_longitude', label: 'Longitud', hint: 'GPS', recalc:true },
