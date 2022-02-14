@@ -185,8 +185,9 @@ export default defineComponent({
     }
     function changed(field) {
       if (!!field.recalc) {
+        let self = field
         for (let field of fields) {
-          if (field.autocalc) {
+          if (field.autocalc && field!=self) {
             data[field.name] = field.autocalc(data)
           }
         }

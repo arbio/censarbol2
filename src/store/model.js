@@ -32,9 +32,10 @@ export default {
             utm.toUTM(tree.location_latitude, tree.location_longitude, 2).ZoneLetter },
         { name: 'especie', label: 'Nombre Común', hint: '', list: 'nombrescomunes' },
         { name: 'cientifico', label: 'Nombre Científico', hint: '', list: 'nombrescientificos' },
-        { name: 'circ', label: 'Circunferencia (cm)', hint: '', recalc:true },
+        { name: 'circ', label: 'Circunferencia (cm)', hint: '', recalc:true,
+          autocalc: tree=>Math.round(nanToZero(tree.dia) * Math.PI * 100)/100 },
         { name: 'alt', label: 'Altura (m)', hint: '' },
-        { name: 'dia', label: 'Diámetro (cm)', hint: '', readonly: true,
+        { name: 'dia', label: 'Diámetro (cm)', hint: '', recalc:true,
           autocalc: tree=>Math.round(nanToZero(tree.circ) / Math.PI * 100)/100 },
         { name: 'relevancia', label: 'Relevancia', hint: '', type: 'option', readonly:true,
           options: [
