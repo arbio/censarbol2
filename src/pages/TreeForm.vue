@@ -127,6 +127,10 @@ import { extend } from 'quasar'
 import model from '../store/model'
 import { mobileAndTabletCheck } from '../util.js'
 
+import species from '../store/species.json'
+let pre_especies = species.map((item)=>item[0])
+let pre_cientificos = species.map((item)=>item[1])
+
 export default defineComponent({
   name: 'TreeForm',
   setup: function (props, context) {
@@ -137,11 +141,13 @@ export default defineComponent({
     let data
     let especies = computed(
       ()=>[... new Set($store.state.trees.inventory.filter(val=>!!val.especie)
-                                      .map(val=>val.especie||''))]
+                                      .map(val=>val.especie||'')),
+                                      ...pre_especies]
     )
     let cientificos = computed(
       ()=>[... new Set($store.state.trees.inventory.filter(val=>!!val.cientifico)
-                                      .map(val=>val.cientifico||''))]
+                                      .map(val=>val.cientifico||'')),
+                                      ...pre_cientificos]
     )
     let fields = model.inventory
     let objUris = reactive({})

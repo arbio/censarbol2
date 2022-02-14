@@ -1,4 +1,6 @@
 import UTMLatLng from 'utm-latlng'
+import species from './species.json'
+
 let utm = new UTMLatLng()
 utm.toUTM = utm.convertLatLngToUtm
 
@@ -7,6 +9,20 @@ function nanToZero(x) {
     return 0
   else
     return x
+}
+function speciesFromTree(tree) {
+  let especie = species.filter(item=>item[1]==tree.cientifico)
+  if (especie.length!=0)
+    return especie[0][0]
+  else
+    return tree.especie
+}
+function scientificFromTree(tree) {
+  let especie = species.filter(item=>item[0]==tree.especie)
+  if (especie.length!=0)
+    return especie[0][1]
+  else
+    return tree.cientifico
 }
 
 export default {
@@ -30,8 +46,10 @@ export default {
         { name: 'utm_zl', label: 'UTM_ZoneLetter', readonly:true, hidden:true,
           autocalc: tree=>
             utm.toUTM(tree.location_latitude, tree.location_longitude, 2).ZoneLetter },
-        { name: 'especie', label: 'Nombre Común', hint: '', list: 'nombrescomunes' },
-        { name: 'cientifico', label: 'Nombre Científico', hint: '', list: 'nombrescientificos' },
+        { name: 'especie', label: 'Nombre Común', hint: '', list: 'nombrescomunes', recalc:true,
+          autocalc: speciesFromTree},
+        { name: 'cientifico', label: 'Nombre Científico', hint: '', list: 'nombrescientificos', recalc:true,
+          autocalc: scientificFromTree},
         { name: 'circ', label: 'Circunferencia (cm)', hint: '', recalc:true,
           autocalc: tree=>Math.round(nanToZero(tree.dia) * Math.PI * 100)/100 },
         { name: 'alt', label: 'Altura (m)', hint: '' },
