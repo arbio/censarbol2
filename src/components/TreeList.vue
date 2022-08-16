@@ -3,7 +3,7 @@
       title="Árboles"
       :rows="rows"
       :columns="columns"
-      row-key="name"
+      row-key="codigo"
       @row-click="editTree"
       :hide-pagination="true"
       :pagination="{sortBy: 'dist',
@@ -59,7 +59,7 @@ export default defineComponent({
     const rows = $store.state.trees.inventory
 
     function editTree(target,tree){
-        $router.push ('/tree/'+tree.name)
+        $router.push ('/tree/'+tree.codigo)
     }
     function calcDist(row){
         if (row.location_latitude &&
@@ -93,7 +93,7 @@ export default defineComponent({
 
     let columns = computed(
         ()=>[
-            {name: 'name', label: "ID", field: 'name', sortable: true},
+            {name: 'codigo', label: "ID", field: 'codigo', sortable: true},
             {name: 'alt', label: "Diá.", field: 'dia', sortable: true},
             {name: 'dir', label: "Dir.", field: 'dir', align: 'center'},
             {name: 'dist', label: "Dist.", sortable: true, 
