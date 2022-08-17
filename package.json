@@ -20,10 +20,10 @@
     "@quasar/extras": "^1.0.0",
     "core-js": "^3.6.5",
     "file-saver": "^2.0.5",
-    "quasar": "^2.0.0",
+    "quasar": "^2.5.5",
     "utm-latlng": "^1.0.6",
     "vue-gapi": "^2.0.0",
-    "vuex": "^4.0.1"
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.13.14",

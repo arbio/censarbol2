@@ -1,6 +1,22 @@
 # Censa Árbol (censarbol2)
 
-Aplicación para hacer registro de árboles. Realizada por encargo para Arbio.
+Aplicación para hacer registro (censo) de árboles amazónicos.
+
+Realizada por encargo para Arbio (Asociación para la Resiliencia del Bosque frente a la Inteor-Oceánica).
+
+Censa Árbol es una Aplicación Web _"progresiva"_
+
+## Instrucciones de instalación
+
+Para instalar la versión de desarrollo, oprimir en este enlace: [Instalar](https://arbio.github.io/censarbol2/)
+
+Esta versión siempre tiene la última versión de pruebas.
+
+## Instalación en hosting propio
+
+La aplicación puede ser publicada en cualquier _hosting_.
+A continuación instrucciones para poder desarrollar y compilar la aplicación resultante.
+
 
 ## Install the dependencies
 ```bash
