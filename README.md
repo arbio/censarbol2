@@ -8,7 +8,7 @@ Censa Árbol es una Aplicación Web _"progresiva"_
 
 ## Instrucciones de instalación
 
-Para instalar la versión de desarrollo, oprimir en este enlace: [Instalar](https://arbio.github.io/censarbol2/)
+Para instalar la versión de desarrollo, oprimir en este enlace: [Instalar](https://fuentelibre.gitlab.io/censaarbol2/#/)
 
 Esta versión siempre tiene la última versión de pruebas.
 
