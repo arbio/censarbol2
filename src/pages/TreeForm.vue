@@ -152,22 +152,22 @@ export default defineComponent({
     let fields = model.inventory
     let objUris = reactive({})
     let slide = ref(0)
-    const thisTree = $store.state.trees.inventory.find(tree=>tree.codigo===id)
+    const thisTree = $store.state.trees.inventory.find(tree=>tree.name===id)
     if (thisTree) {
       let clone = extend(true, {}, thisTree)
       data = reactive(clone)
     }
     else {
       data = reactive({
-        codigo: ''
+        name: ''
       })
     }
     if (data.photos==undefined) data.photos = []
     if (!Array.isArray(data.relevancia)) data.relevancia = []
     function onSubmit(ev) {
-      console.log("submitted", data.codigo)
+      console.log("submitted", data.name)
       $store.commit("trees/saveTree", data)
-      if ( data.codigo!=context.attrs.treeId && context.attrs.treeId!='new') {
+      if ( data.name!=context.attrs.treeId && context.attrs.treeId!='new') {
         $store.commit("trees/removeTree", context.attrs.treeId)
         console.log('removing', context.attrs.treeId)
       }
@@ -175,8 +175,8 @@ export default defineComponent({
     }
     function removeItem(ev) {
       if (thisTree) {
-        $store.commit("trees/removeTree", thisTree.codigo)
-        console.log("removed", thisTree.codigo)
+        $store.commit("trees/removeTree", thisTree.name)
+        console.log("removed", thisTree.name)
       }
       $router.push ('/list')
     }
