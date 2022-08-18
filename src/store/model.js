@@ -75,5 +75,9 @@ export default {
           ]
         },
         { name: 'obs', label: 'Observaciones', hint: '', type: 'textarea'},
+        { name: 'circ2', label: '2da Circunferencia (cm)', hint: '', recalc:true,
+          autocalc: tree=>Math.round(nanToZero(tree.dia2) * Math.PI * 100)/100 },
+        { name: 'dia2', label: '2do Diámetro (cm)', hint: '', recalc:true,
+          autocalc: tree=>Math.round(nanToZero(tree.circ2) / Math.PI * 100)/100 },
     ]
 }
