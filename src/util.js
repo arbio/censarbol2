@@ -81,7 +81,7 @@ export function toGeoJSON(inventory) {
       props.relevancia = relevancia.join(", ")
     }
     if (photos) {
-      props.relevancia = photos.join(", ")
+      props.photos = photos.join(", ")
     }
     return {
       "geometry": {
