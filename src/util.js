@@ -76,9 +76,12 @@ export function sleep(milliseconds) {
 
 export function toGeoJSON(inventory) {
   function treeToFeature(tree) {
-    const {location_latitude, location_longitude, photos, relevancia, ...props} = tree
+    const {location_latitude, location_longitude, photos, fenologia, relevancia, ...props} = tree
     if (relevancia) {
       props.relevancia = relevancia.join(", ")
+    }
+    if (fenologia) {
+      props.fenologia = fenologia.join(", ")
     }
     if (photos) {
       props.photos = photos.join(", ")

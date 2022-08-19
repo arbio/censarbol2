@@ -55,6 +55,16 @@ export default {
         { name: 'alt', label: 'Altura (m)', hint: '' },
         { name: 'dia', label: 'Diámetro (cm)', hint: '', recalc:true,
           autocalc: tree=>Math.round(nanToZero(tree.circ) / Math.PI * 100)/100 },
+        { name: 'fenologia', label: 'Fenología', hint: '', type: 'option', readonly:true,
+          options: [
+            { label: 'Floración',
+              value: 'Floracion'},
+            { label: 'Fructificación',
+              value: 'Fructificacion'},
+            { label: 'Caída de hojas',
+              value: 'Caida_de_hojas'},
+          ]
+        },
         { name: 'relevancia', label: 'Relevancia', hint: '', type: 'option', readonly:true,
           options: [
             { label: 'Medicinal',
@@ -70,10 +80,11 @@ export default {
             { label: 'Majestuoso',
               value: 'Majestuoso'},
             { label: 'Fauna Silvestre',
-              value: 'Fauna'},
+              value: 'Fauna_Silvestre'},
 
           ]
         },
+        { name: 'regen', label: 'Regeneración', hint: 'Colocar número' },
         { name: 'obs', label: 'Observaciones', hint: '', type: 'textarea'},
         { name: 'circ2', label: '2da Circunferencia (cm)', hint: '', recalc:true,
           autocalc: tree=>Math.round(nanToZero(tree.dia2) * Math.PI * 100)/100 },

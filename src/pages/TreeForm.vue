@@ -74,10 +74,10 @@
             <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
               <q-option-group
                         v-if="field.type=='option'"
-                        :name="field.name"
+                        :key="field.name"
                         v-model="data[fields[index].name]"
                         :options="field.options"
-                        type="checkbox"
+                        type="toggle"
                         color="primary"
                       />
               <q-date v-model="data[fields[index].name]"
@@ -164,6 +164,7 @@ export default defineComponent({
     }
     if (data.photos==undefined) data.photos = []
     if (!Array.isArray(data.relevancia)) data.relevancia = []
+    if (!Array.isArray(data.fenologia)) data.fenologia = []
     function onSubmit(ev) {
       console.log("submitted", data.name)
       $store.commit("trees/saveTree", data)
