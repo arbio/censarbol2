@@ -52,9 +52,13 @@ export default {
           autocalc: scientificFromTree},
         { name: 'circ', label: 'Circunferencia (cm)', hint: '', recalc:true,
           autocalc: tree=>Math.round(nanToZero(tree.dia) * Math.PI * 100)/100 },
-        { name: 'alt', label: 'Altura (m)', hint: '' },
         { name: 'dia', label: 'Diámetro (cm)', hint: '', recalc:true,
           autocalc: tree=>Math.round(nanToZero(tree.circ) / Math.PI * 100)/100 },
+        { name: 'circ2', label: '2da Circunferencia (cm)', hint: '', recalc:true,
+          autocalc: tree=>Math.round(nanToZero(tree.dia2) * Math.PI * 100)/100 },
+        { name: 'dia2', label: '2do Diámetro (cm)', hint: '', recalc:true,
+          autocalc: tree=>Math.round(nanToZero(tree.circ2) / Math.PI * 100)/100 },
+        { name: 'alt', label: 'Altura (m)', hint: '' },
         { name: 'fenologia', label: 'Fenología', hint: '', type: 'option', readonly:true,
           options: [
             { label: 'Floración',
@@ -63,6 +67,8 @@ export default {
               value: 'Fructificacion'},
             { label: 'Caída de hojas',
               value: 'Caida_de_hojas'},
+            { label: 'Semillación',
+              value: 'Semillacion'},
           ]
         },
         { name: 'relevancia', label: 'Relevancia', hint: '', type: 'option', readonly:true,
@@ -86,9 +92,5 @@ export default {
         },
         { name: 'regen', label: 'Regeneración', hint: 'Colocar número' },
         { name: 'obs', label: 'Observaciones', hint: '', type: 'textarea'},
-        { name: 'circ2', label: '2da Circunferencia (cm)', hint: '', recalc:true,
-          autocalc: tree=>Math.round(nanToZero(tree.dia2) * Math.PI * 100)/100 },
-        { name: 'dia2', label: '2do Diámetro (cm)', hint: '', recalc:true,
-          autocalc: tree=>Math.round(nanToZero(tree.circ2) / Math.PI * 100)/100 },
     ]
 }
