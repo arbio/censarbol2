@@ -25,6 +25,7 @@ function scientificFromTree(tree) {
     return tree.cientifico
 }
 
+
 export default {
     inventory:
     [
