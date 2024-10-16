@@ -78,17 +78,12 @@ export default {
               value: 'Medicinal'},
             { label: 'Maderable',
               value: 'Maderable'},
-            { label: 'Ornamental',
-              value: 'Ornamental'},
             { label: 'Frutal',
               value: 'Frutal'},
             { label: 'Sagrado',
               value: 'Sagrado'},
-            { label: 'Majestuoso',
-              value: 'Majestuoso'},
             { label: 'Fauna Silvestre',
               value: 'Fauna_Silvestre'},
-
           ]
         },
         { name: 'regen', label: 'Regeneración', hint: 'Colocar número' },
