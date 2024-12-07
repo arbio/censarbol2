@@ -1,119 +1,83 @@
 <template>
-<q-page class="flex column">
-  <datalist id="nombrescomunes">
-    <option v-for="especie in especies" v-bind:key="especie" :value="especie" />
-  </datalist>
-  <datalist id="nombrescientificos">
-    <option v-for="cientifico in cientificos" v-bind:key="cientifico" :value="cientifico" />
-  </datalist>
-  <div class="q-pa-md q-gutter-md">
-    <q-carousel
-      v-if="!(data.photos==undefined) && data.photos.length > 0"
-      v-model="slide"
-      transition-prev="slide-right"
-      transition-next="slide-left"
-      swipeable
-      animated
-      control-color="primary"
-      navigation
-      padding
-      arrows
-      class="--q-primary shadow-2 rounded-borders"
-    >
-      <q-carousel-slide class="column no-wrap" v-for="photo,index in data.photos" :name="index" :key="photo">
-        <div class="row fit justify-start items-center q-gutter-xs q-col-gutter no-wrap">
-          <q-img class="rounded-borders" fit="scale-down" :src="objUris[photo]">
-            <q-icon
-                name="delete"
-                color="negative"
-                class="bg-dark absolute all-pointer-events"
-                @click="removePhoto(index)"
-              />
-          </q-img>
-        </div>
-      </q-carousel-slide>
-    </q-carousel>
+  <q-page class="flex column">
+    <datalist id="nombrescomunes">
+      <option v-for="especie in especies" v-bind:key="especie" :value="especie" />
+    </datalist>
+    <datalist id="nombrescientificos">
+      <option v-for="cientifico in cientificos" v-bind:key="cientifico" :value="cientifico" />
+    </datalist>
+    <div class="q-pa-md q-gutter-md">
+      <q-carousel v-if="!(data.photos == undefined) && data.photos.length > 0" v-model="slide"
+        transition-prev="slide-right" transition-next="slide-left" swipeable animated control-color="primary" navigation
+        padding arrows class="--q-primary shadow-2 rounded-borders">
+        <q-carousel-slide class="column no-wrap" v-for="photo, index in data.photos" :name="index" :key="photo">
+          <div
+            class="row fihttps://github.com/arbio/censarbol2/t justify-start items-center q-gutter-xs q-col-gutter no-wrap">
+            <q-img class="rounded-borders" fit="scale-down" :src="objUris[photo]">
+              <q-icon name="delete" color="negative" class="bg-dark absolute all-pointer-events"
+                @click="removePhoto(index)" />
+            </q-img>
+          </div>
+        </q-carousel-slide>
+      </q-carousel>
 
-    <q-card class="my-card">
+      <q-card class="my-card">
 
-      <q-form
-        @submit="onSubmit"
-        class="q-gutter-md flex column"
-      >
-      <q-card-section>
-      <q-toolbar>
-        <q-btn-group push class="q-mx-auto">
-        <q-btn icon="gps_fixed" text-color="black" label="GPS" @click="getLocations()" color="positive"/>
-        <q-btn icon="camera" text-color="black" label="FOTO" @click="getPhoto()" color="positive"/>
-        </q-btn-group>
-      </q-toolbar>
-      </q-card-section>
+        <q-form @submit="onSubmit" class="q-gutter-md flex column">
+          <q-card-section>
+            <q-toolbar>
+              <q-btn-group push class="q-mx-auto">
+                <q-btn icon="gps_fixed" text-color="black" label="GPS" @click="getLocations()" color="positive" />
+                <q-btn icon="camera" text-color="black" label="FOTO" @click="getPhoto()" color="positive" />
+              </q-btn-group>
+            </q-toolbar>
+          </q-card-section>
 
-      <q-separator />
+          <q-separator />
 
-      <q-card-section>
-        <div class="q-gutter-y-md">
-        <q-input
-          filled
-          v-for="field,index in fields"
-          v-show="!field.hidden"
-          v-model="data[fields[index].name]"
-          :key="fields[index].name"
-          :label="field.label"
-          :hint="field.hint"
-          :rules="field.rules"
-          :mask="field.mask"
-          :hide-hint="true"
-          :readonly="field.readonly"
-          @change="changed(field)"
-          :type="field.type!='date'? field.type:''"
-          :list="field.list"
-        >
-        <template v-if="['date', 'option'].includes(field.type)" v-slot:append>
-          <q-icon :name="iconfor[field.type]" class="cursor-pointer">
-            <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-              <q-option-group
-                        v-if="field.type=='option'"
-                        :key="field.name"
-                        v-model="data[fields[index].name]"
-                        :options="field.options"
-                        type="toggle"
-                        color="primary"
-                      />
-              <q-date v-model="data[fields[index].name]"
-                        v-if="field.type=='date'"
-              >
-                <div class="row items-center justify-end">
-                  <q-btn v-close-popup label="Close" color="primary" flat />
-                </div>
-              </q-date>
-            </q-popup-proxy>
-          </q-icon>
-        </template>
+          <q-card-section>
+            <div class="q-gutter-y-md">
+              <q-input filled v-for="field, index in fields" v-show="!field.hidden" v-model="data[fields[index].name]"
+                :key="fields[index].name" :label="field.label" :hint="field.hint" :rules="field.rules"
+                :mask="field.mask" :hide-hint="true" :readonly="field.readonly" @change="changed(field)"
+                :type="field.type != 'date' ? field.type : ''" :list="field.list">
+                <template v-if="['date', 'option'].includes(field.type)" v-slot:append>
+                  <q-icon :name="iconfor[field.type]" class="cursor-pointer">
+                    <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                      <q-option-group v-if="field.type == 'option'" :key="field.name" v-model="data[fields[index].name]"
+                        :options="field.options" type="toggle" color="primary" />
+                      <q-date v-model="data[fields[index].name]" v-if="field.type == 'date'">
+                        <div class="row items-center justify-end">
+                          <q-btn v-close-popup label="Close" color="primary" flat />
+                        </div>
+                      </q-date>
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
 
-        </q-input>
-        </div>
-        <div>
-          <q-btn class="glossy" label="Guardar" type="submit" color="secondary"/>
-        </div>
-        </q-card-section>
+              </q-input>
+            </div>
+            <div>
+              <q-btn class="glossy" label="Guardar" type="submit" color="secondary" />
+            </div>
+          </q-card-section>
 
-        <q-separator />
+          <q-separator />
 
-        <q-card-section>
-        <div>
-          <q-btn class="glossy" rounded color="red-8" label="Eliminar" @click="removeItem" />
-        </div>
-      </q-card-section>
-      </q-form>
+          <q-card-section>
+            <div>
+              <q-btn class="glossy" rounded color="red-8" label="Eliminar" @click="removeItem" />
+            </div>
+          </q-card-section>
+        </q-form>
 
-    </q-card>
+      </q-card>
 
-    <!-- q-page-sticky position="bottom-right" :offset="[18, 18]">
+      <!-- q-page-sticky position="bottom-right" :offset="[18, 18]">
       <q-btn fab icon="west" color="positive" :to="{path: '/'}" />
     </q-page-sticky -->
-  </div>
-</q-page>
+    </div>
+  </q-page>
 </template>
 
 <script>
@@ -128,8 +92,32 @@ import model from '../store/model'
 import { mobileAndTabletCheck } from '../util.js'
 
 import species from '../store/species.json'
-let pre_especies = species.map((item)=>item[0])
-let pre_cientificos = species.map((item)=>item[1])
+let pre_especies = species.map((item) => item[0])
+let pre_cientificos = species.map((item) => item[1])
+
+// rename photo files
+async function renamePhotoFilesWithID(treeId, photos) {
+  const updatedPhotoPaths = [];
+
+  for (const tempFilePath of photos) {
+    const fileExtension = tempFilePath.split('.').pop();
+    const newFilePath = `/photos/${treeId}_${tempFilePath.split('/').pop()}`;
+
+    try {
+      // Rename the file or move it to the new path
+      await Filesystem.rename({
+        from: tempFilePath,
+        to: newFilePath,
+        directory: Directory.External,
+      });
+      updatedPhotoPaths.push(newFilePath);
+    } catch (error) {
+      console.error('Error renaming file:', error);
+    }
+  }
+
+  return updatedPhotoPaths;
+}
 
 export default defineComponent({
   name: 'TreeForm',
@@ -137,22 +125,22 @@ export default defineComponent({
     const $store = useStore()
     const $router = useRouter()
     const id = context.attrs.treeId
-    let iconfor = {'date': 'event', 'option': 'rule'}
+    let iconfor = { 'date': 'event', 'option': 'rule' }
     let data
     let especies = computed(
-      ()=>[... new Set($store.state.trees.inventory.filter(val=>!!val.especie)
-                                      .map(val=>val.especie||'')),
-                                      ...pre_especies]
+      () => [... new Set($store.state.trees.inventory.filter(val => !!val.especie)
+        .map(val => val.especie || '')),
+      ...pre_especies]
     )
     let cientificos = computed(
-      ()=>[... new Set($store.state.trees.inventory.filter(val=>!!val.cientifico)
-                                      .map(val=>val.cientifico||'')),
-                                      ...pre_cientificos]
+      () => [... new Set($store.state.trees.inventory.filter(val => !!val.cientifico)
+        .map(val => val.cientifico || '')),
+      ...pre_cientificos]
     )
     let fields = model.inventory
     let objUris = reactive({})
     let slide = ref(0)
-    const thisTree = $store.state.trees.inventory.find(tree=>tree.name===id)
+    const thisTree = $store.state.trees.inventory.find(tree => tree.name === id)
     if (thisTree) {
       let clone = extend(true, {}, thisTree)
       data = reactive(clone)
@@ -162,24 +150,46 @@ export default defineComponent({
         name: ''
       })
     }
-    if (data.photos==undefined) data.photos = []
+    if (data.photos == undefined) data.photos = []
     if (!Array.isArray(data.relevancia)) data.relevancia = []
     if (!Array.isArray(data.fenologia)) data.fenologia = []
+
+    // Update the onSubmit function to include renaming logic
     function onSubmit(ev) {
-      console.log("submitted", data.name)
-      $store.commit("trees/saveTree", data)
-      if ( data.name!=context.attrs.treeId && context.attrs.treeId!='new') {
-        $store.commit("trees/removeTree", context.attrs.treeId)
-        console.log('removing', context.attrs.treeId)
+      console.log("submitted", data.name);
+
+      // Rename photos with the new tree ID
+      if (data.photos && data.name) {
+        renamePhotoFilesWithID(data.name, data.photos).then(updatedPhotos => {
+          data.photos = updatedPhotos;
+
+          // Save the tree with updated photo paths
+          $store.commit("trees/saveTree", data);
+
+          if (data.name !== context.attrs.treeId && context.attrs.treeId !== 'new') {
+            $store.commit("trees/removeTree", context.attrs.treeId);
+            console.log('removing', context.attrs.treeId);
+          }
+
+          $router.push('/list');
+        });
+      } else {
+        $store.commit("trees/saveTree", data);
+        if (data.name !== context.attrs.treeId && context.attrs.treeId !== 'new') {
+          $store.commit("trees/removeTree", context.attrs.treeId);
+          console.log('removing', context.attrs.treeId);
+        }
+        $router.push('/list');
       }
-      $router.push ('/list')
     }
+
+
     function removeItem(ev) {
       if (thisTree) {
         $store.commit("trees/removeTree", thisTree.name)
         console.log("removed", thisTree.name)
       }
-      $router.push ('/list')
+      $router.push('/list')
     }
     async function removePhoto(index) {
       console.log('removing photo', data.photos[index])
@@ -194,13 +204,13 @@ export default defineComponent({
       if (!!field.recalc) {
         let self = field
         for (let field of fields) {
-          if (field.autocalc && field!=self) {
+          if (field.autocalc && field != self) {
             data[field.name] = field.autocalc(data)
           }
         }
       }
     }
-    async function getLocations () {
+    async function getLocations() {
       let coordinates
       try {
         coordinates = await Geolocation.getCurrentPosition()
@@ -212,15 +222,15 @@ export default defineComponent({
       $store.commit("trees/addLocationPoint", coordinates)
       this.data.location_latitude = coordinates.coords.latitude
       this.data.location_longitude = coordinates.coords.longitude
-      this.changed({recalc:true})
+      this.changed({ recalc: true })
     }
     async function getPhoto() {
       const image = await Camera.getPhoto({
-          quality: 90,
-          resultType: CameraResultType.Uri,
-          direction: CameraDirection.Front,
-          webUseInput: mobileAndTabletCheck(),
-          saveToGallery: true
+        quality: 90,
+        resultType: CameraResultType.Uri,
+        direction: CameraDirection.Front,
+        webUseInput: mobileAndTabletCheck(),
+        saveToGallery: true
       })
       let datestring = new Date().toISOString()
       let filename = '/photos/tree_' + datestring + '.' + image.format
@@ -236,14 +246,14 @@ export default defineComponent({
       }
       this.data.photos.push(filename)
       this.objUris[filename] = image.webPath
-      this.slide = this.data.photos.length-1
+      this.slide = this.data.photos.length - 1
       console.log(blob)
       console.log(image)
     }
-    onMounted( async function() {
-      if (data.date===undefined){
+    onMounted(async function () {
+      if (data.date === undefined) {
         let today = new Date()
-        let month = today.getMonth()+1
+        let month = today.getMonth() + 1
         if (month <= 9) month = '0' + month
         let day = today.getDate()
         if (day <= 9) day = '0' + day
@@ -259,13 +269,15 @@ export default defineComponent({
           })
           objUris[photo] = URL.createObjectURL(contents.data)
         }
-        catch(e) {
+        catch (e) {
           console.log('ERROR WITH: ', e)
         }
       }
     })
-    return { data, fields, onSubmit, removeItem, getLocations, getPhoto, changed,
-             objUris, onMounted, removePhoto, slide, iconfor, especies, cientificos }
+    return {
+      data, fields, onSubmit, removeItem, getLocations, getPhoto, changed,
+      objUris, onMounted, removePhoto, slide, iconfor, especies, cientificos
+    }
   }
 })
 </script>
