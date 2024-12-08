@@ -12,7 +12,7 @@
         />
 
         <q-toolbar-title>
-          Censa Árbol
+          Censa Árbol (Beta)
         </q-toolbar-title>
 
         <div v-if="this.currentRoute.fullPath==='/list'">
