@@ -169,7 +169,7 @@ export default defineComponent({
         })
 
         let metadata = {
-            'name': item, // Filename at Google Drive
+            'name': item.name, // Filename at Google Drive
             'mimeType': fileItem.data.type, // mimeType at Google Drive
             'parents': [photofolderinfo.result.id], // Folder ID at Google Drive
         }
