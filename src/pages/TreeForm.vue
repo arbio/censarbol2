@@ -95,17 +95,29 @@ import species from '../store/species.json'
 let pre_especies = species.map((item) => item[0])
 let pre_cientificos = species.map((item) => item[1])
 
+window.fs = Filesystem;
+window.dir = Directory;
+window.enc = Encoding;
+
 // rename photo files
 async function renamePhotoFilesWithID(treeId, photos) {
   const updatedPhotoPaths = [];
-
+  
   for (const tempFilePath of photos) {
+    console.log('Processing file:', tempFilePath)
     const fileExtension = tempFilePath.split('.').pop();
     const newFilePath = `/photos/${treeId}_${tempFilePath.split('/').pop()}`;
+    
+    if (tempFilePath.startsWith('/photos/' + treeId + '_')) {
+      console.log('File already has the correct name:', tempFilePath);
+      updatedPhotoPaths.push(tempFilePath);
+      continue;
+    }
 
     try {
       // Rename the file or move it to the new path
-      await Filesystem.rename({
+      console.log('Renaming file:', tempFilePath, 'to:', newFilePath)
+      Filesystem.rename({
         from: tempFilePath,
         to: newFilePath,
         directory: Directory.External,
@@ -270,7 +282,7 @@ export default defineComponent({
           objUris[photo] = URL.createObjectURL(contents.data)
         }
         catch (e) {
-          console.log('ERROR WITH: ', e)
+          console.log('Error: ', e)
         }
       }
     })
