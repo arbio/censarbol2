@@ -125,7 +125,7 @@ export default defineComponent({
       let files
       try {
         files = (await Filesystem.readdir({
-          path: 'photos/',
+          path: '/photos',
           directory: Directory.External
         })).files
       }
@@ -162,6 +162,7 @@ export default defineComponent({
       let n = 0
       let z = 0
       for (let item of files) {
+        console.log(item)
         let fileItem = await Filesystem.readFile({
           path: 'photos/'+item,
           directory: Directory.External
