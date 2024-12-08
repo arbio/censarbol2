@@ -162,9 +162,9 @@ export default defineComponent({
       let n = 0
       let z = 0
       for (let item of files) {
-        console.log(item)
+        console.log(item.name)
         let fileItem = await Filesystem.readFile({
-          path: 'photos/'+item,
+          path: 'photos/'+item.name,
           directory: Directory.External
         })
 
